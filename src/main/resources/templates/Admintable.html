@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reservation List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      margin: 0;
+      padding: 10px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: auto;
+      background: white;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      box-sizing: border-box;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+      font-size: 1.8rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    thead {
+      background-color: #4a90e2;
+      color: white;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: center;
+      border-bottom: 1px solid #ccc;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    button {
+      padding: 8px 12px;
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      margin: 3px;
+      font-size: 0.9rem;
+    }
+
+    button.cancel {
+      background-color: #f39c12;
+    }
+
+    button.delete {
+      background-color: #c0392b;
+    }
+    
+    #backBtn {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      margin-bottom: 15px;
+      cursor: pointer;
+      border-radius: 4px;
+      display: block;
+      width: auto;
+    }
+
+    .form-group {
+      margin: 15px 0;
+    }
+
+    select, input[type="date"] {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      font-size: 16px; /* Prevents zoom on iOS */
+    }
+
+    #reservationTable {
+      display: none;
+      overflow-x: auto; /* Enable horizontal scrolling for small screens */
+    }
+    
+    /* Screenshot link styling */
+    .screenshot-link {
+      color: blue;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    
+    /* Modal for displaying screenshots */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.7);
+      overflow: auto;
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 10% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 700px;
+      border-radius: 8px;
+      position: relative;
+    }
+
+    .close-btn {
+      color: #aaa;
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close-btn:hover {
+      color: black;
+    }
+
+    .screenshot-image {
+      width: 100%;
+      max-height: 500px;
+      object-fit: contain;
+    }
+    
+    .image-error {
+      display: none;
+      color: red;
+      text-align: center;
+      margin-top: 20px;
+    }
+    
+    .modal-actions {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid #eee;
+    }
+
+    .success-btn {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+
+    .fail-btn {
+      background-color: #f44336;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+
+    .success-btn:hover {
+      background-color: #45a049;
+    }
+
+    .fail-btn:hover {
+      background-color: #d32f2f;
+    }
+    
+    .status-verified {
+      color: #008000;
+      font-weight: bold;
+    }
+
+    .status-failed {
+      color: #d32f2f;
+      font-weight: bold;
+    }
+
+    .verification-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      margin-left: 5px;
+    }
+
+    .verification-success {
+      background-color: rgba(76, 175, 80, 0.2);
+      color: #2e7d32;
+      border: 1px solid #4CAF50;
+    }
+
+    .verification-failed {
+      background-color: rgba(244, 67, 54, 0.2);
+      color: #c62828;
+      border: 1px solid #f44336;
+    }
+    
+    /* Mobile responsive styles */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+      
+      .container {
+        padding: 10px;
+      }
+      
+      /* Stack form elements better on mobile */
+      .form-group {
+        margin: 10px 0;
+      }
+      
+      /* Table responsive enhancements */
+      th, td {
+        padding: 8px 5px;
+        font-size: 0.9rem;
+      }
+      
+      /* Hide less important columns on small screens */
+      @media (max-width: 600px) {
+        .email-column, .payment-method-column {
+          display: none;
+        }
+        
+        button {
+          padding: 6px 8px;
+          font-size: 0.8rem;
+        }
+      }
+      
+      .modal-content {
+        width: 95%;
+        margin: 20% auto;
+      }
+      
+      .modal-actions {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .success-btn, .fail-btn {
+        width: 100%;
+      }
+    }
+
+    /* Very small screens */
+    @media (max-width: 480px) {
+      table {
+        font-size: 0.8rem;
+      }
+      
+      th, td {
+        padding: 6px 3px;
+      }
+      
+      h1 {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <button id="backBtn" onclick="window.location.href='/ADMIN'">
+      &#8592; GO TO Admin Panel
+    </button>
+    <h1>All Table Reservations</h1>
+
+    <div class="form-group">
+      <label for="date">Select Reservation Date:</label>
+      <input type="date" id="date" required>
+    </div>
+
+    <div class="form-group">
+      <label for="timeSlot">Select Time Slot:</label>
+      <select id="timeSlot" required>
+        <option value="">Select a Time Slot</option>
+      </select>
+    </div>
+
+    <div id="reservationTable">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th class="email-column">Email</th>
+            <th>Phone</th>
+            <th>Guests</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th class="payment-method-column">Payment Method</th>
+            <th>Payment Screenshot</th>
+            <th>Payment Status</th>
+            <th>Payment Verification</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Modal for displaying screenshots -->
+  <div id="screenshotModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <h2 id="modal-title">Payment Screenshot</h2>
+      <div id="image-container">
+        <img id="screenshot-img" class="screenshot-image" src="" alt="Payment Screenshot">
+      </div>
+      <div id="image-error" class="image-error">
+        Unable to load image. The image path might be incorrect or the file doesn't exist.
+      </div>
+      
+      <!-- Payment verification buttons -->
+      <div class="modal-actions">
+        <button id="verify-success" class="success-btn">Verify Payment Success</button>
+        <button id="verify-failure" class="fail-btn">Mark Payment Failed</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Global variables
+    const dateInput = document.getElementById('date');
+    const timeSlotSelect = document.getElementById('timeSlot');
+    const reservationTable = document.getElementById('reservationTable');
+    const tableBody = document.getElementById('tableBody');
+    const modal = document.getElementById("screenshotModal");
+    const screenshotImg = document.getElementById("screenshot-img");
+    const imageError = document.getElementById("image-error");
+    const verifySuccessBtn = document.getElementById("verify-success");
+    const verifyFailureBtn = document.getElementById("verify-failure");
+    
+    // Store current reservation ID for verification
+    let currentReservationId = null;
+    
+    // Store payment verifications in local storage to persist them
+    let paymentVerifications = {};
+    
+    // Load saved verifications from local storage
+    function loadVerifications() {
+      const savedVerifications = localStorage.getItem('reservationPaymentVerifications');
+      if (savedVerifications) {
+        paymentVerifications = JSON.parse(savedVerifications);
+      }
+    }
+    
+    // Save verifications to local storage
+    function saveVerifications() {
+      localStorage.setItem('reservationPaymentVerifications', JSON.stringify(paymentVerifications));
+    }
+
+    // Fetch available time slots when date is selected
+    dateInput.addEventListener('change', () => {
+      const selectedDate = dateInput.value;
+      if (selectedDate) {
+        fetch(`http://localhost:8080/availableTimes?date=${selectedDate}`)
+          .then(res => res.json())
+          .then(data => {
+            timeSlotSelect.innerHTML = '<option value="">Select a Time Slot</option>';
+            if (data.success) {
+              Object.entries(data.availableTimes).forEach(([slot, isAvailable]) => {
+                if (isAvailable) {
+                  const option = document.createElement('option');
+                  option.value = slot;
+                  option.textContent = slot;
+                  timeSlotSelect.appendChild(option);
+                }
+              });
+            }
+          });
+      }
+    });
+
+    // Load and show filtered reservation data only after both selections
+    timeSlotSelect.addEventListener('change', () => {
+      const selectedDate = dateInput.value;
+      const selectedTime = timeSlotSelect.value;
+
+      if (selectedDate && selectedTime) {
+        fetch("http://localhost:8080/allReservations")
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              const filtered = data.reservations.filter(r => r.date === selectedDate && r.time_slot === selectedTime);
+
+              tableBody.innerHTML = "";
+
+              if (filtered.length > 0) {
+                reservationTable.style.display = 'block';
+
+                filtered.forEach(res => {
+                  const row = document.createElement("tr");
+                  const screenshotCell = res.screenshot_path ? 
+                    `<a class="screenshot-link" onclick="viewScreenshot('${res.screenshot_path}', '${res.reservation_id}')">View</a>` : 
+                    'Not uploaded';
+                  
+                  row.innerHTML = `
+                    <td>${res.name}</td>
+                    <td class="email-column">${res.email}</td>
+                    <td>${res.phone}</td>
+                    <td>${res.guests}</td>
+                    <td>${res.date}</td>
+                    <td>${res.time_slot}</td>
+                    <td class="payment-method-column">${res.payment_method}</td>
+                    <td>${screenshotCell}</td>
+                    <td>${res.payment_status}</td>
+                    <td>${getVerificationStatusHTML(res.reservation_id)}</td>
+                    <td>${res.status}</td>
+                    <td>
+                      ${res.status !== 'Cancelled' ? `<button class="cancel" onclick="cancelReservation('${res.reservation_id}')">Cancel</button>` : ''}
+                      <button class="delete" onclick="deleteReservation('${res.reservation_id}')">Delete</button>
+                    </td>
+                  `;
+                  tableBody.appendChild(row);
+                });
+              } else {
+                reservationTable.style.display = 'none';
+                alert("No reservations found for selected date and time.");
+              }
+            }
+          });
+      }
+    });
+
+    // Get verification status HTML
+    function getVerificationStatusHTML(reservationId) {
+      if (!paymentVerifications[reservationId]) {
+        return '<span>Not verified</span>';
+      }
+      
+      const verification = paymentVerifications[reservationId];
+      if (verification.status === 'success') {
+        return `<span class="status-verified">
+          Verified <span class="verification-badge verification-success">✓</span>
+        </span>`;
+      } else {
+        return `<span class="status-failed">
+          Failed <span class="verification-badge verification-failed">✗</span>
+        </span>`;
+      }
+    }
+    
+    // View screenshot in modal
+    function viewScreenshot(url, reservationId) {
+      // Save current reservation ID for verification buttons
+      currentReservationId = reservationId;
+      
+      // Update modal title
+      document.getElementById("modal-title").innerText = `Payment Screenshot (Reservation: ${reservationId})`;
+      
+      // Reset image error message
+      imageError.style.display = "none";
+      
+      // Try to load the image
+      screenshotImg.src = url;
+      screenshotImg.style.display = "block";
+      
+      // Handle image loading errors
+      screenshotImg.onerror = function() {
+        screenshotImg.style.display = "none";
+        imageError.style.display = "block";
+        
+        // Check if the URL is a relative path and needs the base URL
+        if (url && !url.startsWith('http') && !url.startsWith('/')) {
+          imageError.innerHTML = `
+            Image failed to load. The path might be incorrect.<br>
+            Path: ${url}<br><br>
+            <small>Note: If this is a relative path, make sure your server is configured to serve these files.</small>
+          `;
+        } else {
+          imageError.innerHTML = `
+            Image failed to load. The URL might be incorrect or the file doesn't exist.<br>
+            URL: ${url}
+          `;
+        }
+      };
+      
+      // Update verification button states based on current verification
+      updateVerificationButtonStates(reservationId);
+      
+      // Show the modal
+      modal.style.display = "block";
+    }
+    
+    // Update verification button states
+    function updateVerificationButtonStates(reservationId) {
+      const verification = paymentVerifications[reservationId];
+      
+      if (verification) {
+        if (verification.status === 'success') {
+          verifySuccessBtn.innerHTML = "✓ Verified as Successful";
+          verifySuccessBtn.style.opacity = "0.7";
+          verifyFailureBtn.innerHTML = "Mark Payment Failed";
+          verifyFailureBtn.style.opacity = "1";
+        } else {
+          verifySuccessBtn.innerHTML = "Verify Payment Success";
+          verifySuccessBtn.style.opacity = "1";
+          verifyFailureBtn.innerHTML = "✗ Marked as Failed";
+          verifyFailureBtn.style.opacity = "0.7";
+        }
+      } else {
+        verifySuccessBtn.innerHTML = "Verify Payment Success";
+        verifySuccessBtn.style.opacity = "1";
+        verifyFailureBtn.innerHTML = "Mark Payment Failed";
+        verifyFailureBtn.style.opacity = "1";
+      }
+    }
+    
+    // Close modal function
+    function closeModal() {
+      modal.style.display = "none";
+      currentReservationId = null;
+    }
+    
+    // Set payment verification status
+    function setPaymentVerification(reservationId, status) {
+      paymentVerifications[reservationId] = {
+        status: status,
+        timestamp: new Date().toISOString()
+      };
+      saveVerifications();
+      closeModal();
+      
+      // Refresh the table to show updated status
+      const selectedDate = dateInput.value;
+      const selectedTime = timeSlotSelect.value;
+      if (selectedDate && selectedTime) {
+        timeSlotSelect.dispatchEvent(new Event('change'));
+      }
+    }
+
+    // Close modal when clicking outside of it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        closeModal();
+      }
+    }
+
+    function cancelReservation(reservationId) {
+      const email = prompt("Enter your email to cancel the reservation:");
+      if (email) {
+        fetch("http://localhost:8080/cancelReservation", {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ reservationId, email })
+        })
+        .then(res => res.json())
+        .then(data => {
+          alert(data.message);
+          if (data.success) location.reload();
+        });
+      }
+    }
+
+	function deleteReservation(reservationId) {
+	  if (confirm("Are you sure you want to delete this reservation?")) {
+	    fetch("http://localhost:8080/deleteReservation", {
+	      method: 'DELETE',
+	      headers: { 'Content-Type': 'application/json' },
+	      body: JSON.stringify({ reservationId })
+	    })
+	    .then(res => res.json())
+	    .then(data => {
+	      alert(data.message);
+	      if (data.success) {
+	        // Delete local verification
+	        if (paymentVerifications[reservationId]) {
+	          delete paymentVerifications[reservationId];
+	          saveVerifications();
+	        }
+	        location.reload();
+	      }
+	    });
+      }
+    }
+    
+    // Initialize app
+    document.addEventListener("DOMContentLoaded", function() {
+      // Load saved verifications
+      loadVerifications();
+      
+      // Add payment verification button event listeners
+      verifySuccessBtn.addEventListener("click", function() {
+        if (currentReservationId) {
+          setPaymentVerification(currentReservationId, 'success');
+        }
+      });
+      
+      verifyFailureBtn.addEventListener("click", function() {
+        if (currentReservationId) {
+          setPaymentVerification(currentReservationId, 'failure');
+        }
+      });
+      
+      // Set current date as default
+      const today = new Date();
+      const formattedDate = today.toISOString().split('T')[0];
+      dateInput.value = formattedDate;
+      
+      // Trigger date change to load time slots
+      dateInput.dispatchEvent(new Event('change'));
+    });
+  </script>
+</body>
+</html>

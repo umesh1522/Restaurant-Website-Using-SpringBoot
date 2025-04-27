@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Umesh</title>
+    <link rel="stylesheet" href="Home.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="Home.js"></script>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="logo">
+    <img src="https://cdn-icons-png.flaticon.com/512/3075/3075977.png" alt="Restaurant Logo" width="50" height="50">
+    <h1>Hotel Umesh</h1>
+  </div>
+
+  <ul class="nav-links">
+    <li><a href="#hero" class="active">Home</a></li>
+    <li><a href="#about">About Us</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#contact">Contact Us</a></li>
+  </ul>
+
+  <!-- Group right side elements -->
+  <div class="right-icons">
+    <div class="feedback-icon">
+      <a href="feedback">
+        <i class="fas fa-comment-alt"></i>
+        Give Feedback
+      </a>
+    </div>
+
+    <div class="profile-icon" id="profile-icon">
+      <i class="fas fa-user"></i>
+    </div>
+          
+
+
+    <div class="menu-icon" id="menu-toggle">
+      <i class="fas fa-bars"></i>
+    </div>
+   
+  </div>
+
+  <!-- Profile popup -->
+  <div class="profile-popup" id="profilePopup">
+    <div class="popup-content">
+      <h4 class="popup-username">Hi, <span id="popupUsername">User</span>!</h4>
+      <button id="logoutBtn" class="logout-btn">Logout</button>
+    </div>
+  </div>
+
+  <!-- Mobile navigation -->
+  <div class="mobile-nav" id="mobileNav">
+    <a href="#hero" class="active">Home</a>
+    <a href="#about">About Us</a>
+    <a href="#menu">Menu</a>
+    <a href="#services">Services</a>
+    <a href="#contact">Contact Us</a>
+  </div>
+</nav>
+    
+    
+    
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <h2>Exquisite Dining Experience</h2>
+            <p>Discover our carefully crafted menu featuring the finest ingredients and flavors from around the world. Join us for an unforgettable culinary journey.</p>
+            <button class="cta-button" onclick="window.location.href='/table'">Reserve a Table</button>
+        </div>
+    </section>
+    
+    <!-- Content Section - About Us -->
+    <section class="content-section" id="about">
+        <div class="section-title">
+            <h2>About Us</h2>
+            <p>Meet our passion and journey</p>
+        </div>
+        <div class="about-cards">
+            <!-- Left Card: Hotel Image -->
+            <div class="card about-card-left">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c" alt="Hotel Exterior View" class="hotel-img">
+                <h3>Hotel Umesh</h3>
+                <p>Serving Flavor & Warmth</p>
+            </div>
+
+            <!-- Right Card: About Info -->
+            <div class="card about-card-right">
+                <p>
+                    At Hotel Umesh, we take pride in curating a rich culinary experience paired with comfort and class. What started as a small kitchen led by our founder's deep love for authentic flavors is now a well-loved space for foodies and travelers alike.
+                </p>
+                <p>
+                    With every plate we serve, we promise a blend of tradition, taste, and heartwarming hospitality. Your satisfaction is our legacy.
+                </p>
+                <button onclick="window.location.href='/about.html'" class="explore-button">Explore More</button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Content Section - Menu --> 
+    <section class="content-section" id="menu"> 
+        <div class="section-title"> 
+            <h2>Our Menu</h2> 
+            <p>Explore our delicious offerings</p> 
+        </div>
+        
+        <div class="menu-navigation">
+            <a href="/samplemenu" class="menu-button">Go to Full Menu</a>
+        </div>
+        
+        <div id="menu-content" class="section-content">
+            <!-- Static menu cards with hover effects -->
+            <div class="menu-card-container">
+                <div class="menu-card">
+                    <div class="menu-card-image">
+                        <img src="https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58" alt="Appetizers"> 
+                    </div>
+                    <div class="menu-card-content">
+                        <h3>Appetizers</h3>
+                        <p>Start your meal with our signature starters</p>
+                        <span class="menu-price">$8.99 - $14.99</span>
+                    </div>
+                </div>
+                
+                <div class="menu-card">
+                    <div class="menu-card-image">
+                        <img src="https://images.unsplash.com/photo-1544025162-d76694265947" alt="Main Course">
+                    </div>
+                    <div class="menu-card-content">
+                        <h3>Main Course</h3>
+                        <p>Delicious entrées prepared with fresh ingredients</p>
+                        <span class="menu-price">$16.99 - $28.99</span>
+                    </div>
+                </div>
+                
+                <div class="menu-card">
+                    <div class="menu-card-image">
+                        <img src="https://images.unsplash.com/photo-1551024601-bec78aea704b" alt="Desserts">
+                    </div>
+                    <div class="menu-card-content">
+                        <h3>Desserts</h3>
+                        <p>Sweet treats to complete your dining experience</p>
+                        <span class="menu-price">$6.99 - $10.99</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section" id="services">
+        <div class="section-title">
+            <h2>Our Services</h2>
+            <p>What we offer to our valued customers</p>
+        </div>
+        <div id="services-content" class="section-content">
+            <div class="service-card">
+                <img src="https://images.unsplash.com/photo-1551632436-cbf8dd35adfa" alt="Room Service" class="service-img">
+                <h3>Room Service</h3>
+                <p>Enjoy a comfortable stay with our top-notch room service. We offer 24/7 in-room dining and housekeeping.</p>
+                <a href="room-service.html" class="service-btn">Learn More</a>
+            </div>
+            
+            <div class="service-card">
+                <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de" alt="Restaurant" class="service-img">
+                <h3>Restaurant</h3>
+                <p>Indulge in exquisite meals at our in-house restaurant. Enjoy diverse cuisines prepared by our expert chefs.</p>
+                <a href="restaurant.html" class="service-btn">Learn More</a>
+            </div>
+            
+            <div class="service-card">
+                <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef" alt="Spa" class="service-img">
+                <h3>Spa</h3>
+                <p>Relax and rejuvenate with our luxurious spa services. We offer various treatments to make your stay stress-free.</p>
+                <a href="spa.html" class="service-btn">Learn More</a>
+            </div>
+            
+            <div class="service-card">
+                <img src="https://images.unsplash.com/photo-1582653291997-079a1c04e5a1" alt="Conference Rooms" class="service-img">
+                <h3>Conference Rooms</h3>
+                <p>Host your meetings or events in our state-of-the-art conference rooms equipped with the latest technology.</p>
+                <a href="conference-rooms.html" class="service-btn">Learn More</a>
+            </div>
+            
+            <div class="service-card">
+                <img src="https://images.unsplash.com/photo-1575429198097-0414ec08e8cd" alt="Swimming Pool" class="service-img">
+                <h3>Swimming Pool</h3>
+                <p>Take a refreshing dip in our pristine swimming pool with a beautiful view. Perfect for relaxation and recreation.</p>
+                <a href="swimming-pool.html" class="service-btn">Learn More</a>
+            </div>
+            
+            <div class="service-card">
+                <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48" alt="Fitness Center" class="service-img">
+                <h3>Fitness Center</h3>
+                <p>Stay fit during your stay with our modern fitness center featuring state-of-the-art equipment and personal trainers.</p>
+                <a href="fitness-center.html" class="service-btn">Learn More</a>
+            </div>
+        </div>
+    </section>
+    
+    <section class="content-section" id="contact">
+        <div class="section-title">
+            <h2>Contact Us</h2>
+            <p>Get in touch with our team</p>
+        </div>
+        <div id="contact-content" class="section-content">
+            <!-- Contact Container -->
+            <div class="contact-container">
+                <!-- Left Side: Contact Form -->
+                <div class="contact-form-container">
+                    <h3>Send us a message</h3>
+                    <form id="contactForm" onsubmit="submitContactForm(event)">
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Your Email</label>
+                            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" name="subject" placeholder="Enter subject" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="6" placeholder="Enter your message" required></textarea>
+                        </div>
+                        <button type="submit" class="send-btn">Send Message</button>
+                    </form>
+                </div>
+                
+                <!-- Right Side: Contact Info -->
+                <div class="contact-info-container">
+                    <div class="info-box">
+                        <div class="info-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>Our Location</h4>
+                            <p>123 Gourmet Street, Foodie City, FC 12345</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-box">
+                        <div class="info-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>Call Us</h4>
+                            <p>+91 123 456 7890</p>
+                            <p>+91 987 654 3210</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-box">
+                        <div class="info-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>Email Us</h4>
+                            <p>info@hotelumesh.com</p>
+                            <p>reservations@hotelumesh.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-box">
+                        <div class="info-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>Open Hours</h4>
+                            <p>Mon-Sat: 11AM - 11PM</p>
+                            <p>Sunday: 12PM - 9PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Map Container -->
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.9663095343008!2d-74.0059418!3d40.7127847!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDDCsDQyJzQ2LjAiTiA3NMKwMDAnMjEuNCJX!5e0!3m2!1sen!2sin!4v1621345678901!5m2!1sen!2sin" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+    
+<script>
+function submitContactForm(event) {
+    event.preventDefault();
+    
+    // Get form values
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const subject = document.getElementById('subject').value;
+    const message = document.getElementById('message').value;
+    
+    // Display loading state
+    const submitBtn = document.querySelector('.send-btn');
+    const originalBtnText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+    
+    // Send data to server
+    fetch('/submitContactForm', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            name: name,
+            email: email,
+            subject: subject,
+            message: message
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message === "Message sent successfully") {
+            alert(`Thank you, ${name}! Your message has been sent. We'll get back to you shortly.`);
+            document.getElementById('contactForm').reset();
+        } else {
+            alert('There was an error sending your message. Please try again.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('There was an error sending your message. Please try again.');
+    })
+    .finally(() => {
+        // Restore button state
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalBtnText;
+    });
+}
+</script>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Hotel Umesh</h3>
+                <p>Providing exceptional dining experiences since 2010. We're committed to quality, service, and unforgettable flavors.</p>
+                <div class="social-icons">
+                    <i class="fab fa-facebook"></i>
+                    <i class="fab fa-instagram"></i>
+                    <i class="fab fa-twitter"></i>
+                    <i class="fab fa-yelp"></i>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Hours</h3>
+                <p>Monday - Thursday: 11am - 10pm</p>
+                <p>Friday - Saturday: 11am - 11pm</p>
+                <p>Sunday: 12pm - 9pm</p>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Contact</h3>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Gourmet Street, Foodie City</p>
+                <p><i class="fas fa-phone"></i> (555) 123-4567</p>
+                <p><i class="fas fa-envelope"></i> info@hotelumesh.com</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Hotel Umesh. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

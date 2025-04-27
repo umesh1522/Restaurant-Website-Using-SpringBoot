@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Management</title>
+  <style>
+    /* user.css */
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #fffdf5;
+      color: #333;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 30px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    h1, h2 {
+      color: #ff7a00;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .form-container {
+      margin-bottom: 30px;
+      background: #fff7f0;
+      border: 2px solid #ffb366;
+      border-radius: 15px;
+      padding: 20px;
+    }
+
+    form input,
+    .form-container input {
+      width: 100%;
+      padding: 12px 15px;
+      margin: 10px 0;
+      border: 2px solid #ffb366;
+      border-radius: 8px;
+      outline: none;
+      transition: border 0.3s ease;
+    }
+
+    form input:focus,
+    .form-container input:focus {
+      border-color: #ff7a00;
+    }
+
+    button {
+      background: #ff7a00;
+      color: white;
+      border: none;
+      padding: 12px 18px;
+      margin-right: 10px;
+      margin-top: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #e86600;
+    }
+
+    #userTable {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      overflow-x: auto;
+    }
+
+    #userTable thead {
+      background-color: #ff7a00;
+      color: white;
+    }
+
+    #userTable th, #userTable td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #ddd;
+      text-align: center;
+      word-break: break-word;
+    }
+
+    #userTable tr:hover {
+      background-color: #fff3e6;
+    }
+
+    #editUserForm {
+      background: #fff4e6;
+      border: 2px dashed #ffa94d;
+      transition: all 0.3s ease-in-out;
+    }
+
+    /* Scroll Behavior */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    body::-webkit-scrollbar-thumb {
+      background-color: #ff7a00;
+      border-radius: 10px;
+    }
+
+    body::-webkit-scrollbar-track {
+      background-color: #fff3e6;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px;
+      }
+
+      form input,
+      .form-container input,
+      button {
+        font-size: 14px;
+        padding: 10px;
+      }
+
+      #userTable thead {
+        display: none;
+      }
+
+      #userTable, 
+      #userTable tbody, 
+      #userTable tr, 
+      #userTable td {
+        display: block;
+        width: 100%;
+      }
+
+      #userTable tr {
+        margin-bottom: 15px;
+        border: 1px solid #eee;
+        padding: 10px;
+        border-radius: 10px;
+        background-color: #fff;
+      }
+
+      #userTable td {
+        text-align: right;
+        position: relative;
+        padding-left: 50%;
+      }
+
+      #userTable td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 15px;
+        width: 45%;
+        padding-right: 10px;
+        font-weight: bold;
+        text-align: left;
+        color: #555;
+      }
+	  
+	  
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="container">
+	<button id="backBtn" onclick="window.location.href='/ADMIN'" sstyle="background-color: #007BFF; color: white; border: none; padding: 10px 15px; margin-bottom: 20px; cursor: pointer; border-radius: 4px;">
+							        &#8592; GO TO Admin Panel
+							    </button>
+    <h1>Normal User Management Dashboard</h1>
+
+    <!-- Add New User Form -->
+    <div class="form-container">
+      <h2>Add New User</h2>
+      <form id="addUserForm">
+        <input type="text" id="username" placeholder="Enter Username" required>
+        <input type="email" id="email" placeholder="Enter Email" required>
+        <input type="password" id="password" placeholder="Enter Password" required>
+        <button type="submit">Add User</button>
+      </form>
+    </div>
+
+    <!-- User Table -->
+    <h2>All Users</h2>
+    <table id="userTable">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="userList">
+        <!-- Dynamic User List will be inserted here -->
+      </tbody>
+    </table>
+
+    <!-- Edit User Form -->
+    <div class="form-container" id="editUserForm" style="display: none;">
+      <h2>Edit User</h2>
+      <input type="text" id="editUsername" placeholder="Enter Username" required>
+      <input type="email" id="editEmail" placeholder="Enter Email" required>
+      <input type="password" id="editPassword" placeholder="Enter Password" required>
+      <button id="updateButton">Update User</button>
+      <button id="cancelButton">Cancel</button>
+    </div>
+  </div>
+
+  <script src="normaluser.js"></script>
+</body>
+
+</html>

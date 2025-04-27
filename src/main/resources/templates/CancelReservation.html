@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hotel Umesh - Reservation Lookup</title>
+  <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background: #f5f5f5;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 800px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        padding: 40px;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        margin-bottom: 30px;
+      }
+
+      .logo-text {
+        color: #f57c00;
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      h2 {
+        font-size: 28px;
+        color: #333;
+        margin-bottom: 30px;
+        position: relative;
+      }
+
+      h2:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -10px;
+        width: 50px;
+        height: 4px;
+        background: #f57c00;
+      }
+
+      .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+      }
+
+      .form-group {
+        flex: 1;
+        min-width: 200px;
+        margin-right: 20px;
+        margin-bottom: 20px;
+      }
+
+      .form-group:last-child {
+        margin-right: 0;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #555;
+      }
+
+      input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: border 0.3s;
+      }
+
+      input:focus {
+        border-color: #f57c00;
+        outline: none;
+      }
+
+      .btn {
+        width: 100%;
+        height: 50px;
+        background: #f57c00;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 18px;
+        margin-top: 20px;
+        transition: 0.3s;
+      }
+
+      .btn:hover {
+        background: #e65100;
+      }
+
+      .btn.secondary {
+        background: #ccc;
+        color: #333;
+      }
+
+      .btn.secondary:hover {
+        background: #bbb;
+      }
+
+      .btn.danger {
+        background: #dc3545;
+      }
+
+      .btn.danger:hover {
+        background: #c82333;
+      }
+
+      .response-message {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 5px;
+        text-align: center;
+        font-size: 16px;
+        display: none;
+      }
+
+      .success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+
+      .error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+
+      .reservation-details {
+        background: #f9f9f9;
+        padding: 20px;
+        border-radius: 5px;
+        margin: 20px 0;
+        display: none;
+      }
+
+      .detail-row {
+        display: flex;
+        border-bottom: 1px solid #eee;
+        padding: 10px 0;
+      }
+
+      .detail-label {
+        font-weight: 500;
+        width: 40%;
+      }
+
+      .detail-value {
+        width: 60%;
+      }
+
+      .cancel-section {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+        display: none;
+      }
+
+      .cancel-warning {
+        padding: 15px;
+        background-color: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeeba;
+        border-radius: 5px;
+        margin-bottom: 20px;
+      }
+
+      .navigation {
+        display: flex;
+        margin-top: 40px;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .nav-link {
+        color: #f57c00;
+        text-decoration: none;
+        font-weight: 500;
+        transition: 0.3s;
+      }
+
+      .nav-link:hover {
+        color: #e65100;
+        text-decoration: underline;
+      }
+
+      .reservation-status {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 3px;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .status-confirmed {
+        background-color: #d4edda;
+        color: #155724;
+      }
+
+      .status-cancelled {
+        background-color: #f8d7da;
+        color: #721c24;
+      }
+
+      .status-pending {
+        background-color: #fff3cd;
+        color: #856404;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 20px;
+        }
+        
+        .form-group {
+          margin-right: 0;
+        }
+      }
+    </style>
+</head>
+<body>
+  <div class="container">
+	
+    <div class="logo">
+      <svg width="40" height="40" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="45" fill="#fff1f0" />
+        <path d="M30,35 C30,30 40,25 50,25 C60,25 70,30 70,35 L70,65 C70,75 60,80 50,80 C40,80 30,75 30,65 Z" fill="#f57c00" />
+        <rect x="30" y="40" width="40" height="5" rx="2" fill="#fff" />
+        <rect x="30" y="50" width="40" height="5" rx="2" fill="#fff" />
+        <rect x="30" y="60" width="40" height="5" rx="2" fill="#fff" />
+      </svg>
+      <span class="logo-text">Hotel Umesh</span>
+    </div>
+
+    <h2>Check or Cancel Your Reservation</h2>
+    
+    <div id="searchForm">
+      <div class="form-group">
+        <label for="reservationId">Reservation ID</label>
+        <input type="text" id="reservationId" placeholder="e.g. HU-20250419-0001" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="Enter the email used for booking" required>
+      </div>
+      <button class="btn" id="searchBtn">Find Reservation</button>
+    </div>
+
+    <div class="response-message error" id="errorMessage"></div>
+    
+    <div class="reservation-details" id="reservationDetails">
+      <h3>Reservation Details</h3>
+      <div class="detail-row"><strong>Reservation ID:</strong> <span id="detailId"></span></div>
+      <div class="detail-row"><strong>Name:</strong> <span id="detailName"></span></div>
+      <div class="detail-row"><strong>Date:</strong> <span id="detailDate"></span></div>
+      <div class="detail-row"><strong>Time:</strong> <span id="detailTime"></span></div>
+      <div class="detail-row"><strong>Number of Guests:</strong> <span id="detailGuests"></span></div>
+      <div class="detail-row"><strong>Payment Status:</strong> <span id="detailPayment"></span></div>
+      <div class="detail-row"><strong>Reservation Status:</strong> <span class="reservation-status" id="detailStatus"></span></div>
+      <div class="detail-row" id="specialRequestsRow"><strong>Special Requests:</strong> <span id="detailRequests"></span></div>
+    </div>
+
+    <div class="cancel-section" id="cancelSection">
+      <div class="cancel-warning">
+        <strong>Warning:</strong> Cancellation is irreversible. If you've made an online payment, a refund will be processed in 5–7 business days.
+      </div>
+      <button class="btn danger" id="cancelBtn">Cancel Reservation</button>
+    </div>
+
+    <div class="response-message success" id="successMessage"></div>
+    
+    <div class="navigation">
+      <a href="/table">← Go Back</a> |
+      <a href="/reserve">Book a New Table →</a>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const API_BASE_URL = 'http://localhost:8080';
+
+      const searchBtn = document.getElementById('searchBtn');
+      const cancelBtn = document.getElementById('cancelBtn');
+      const reservationIdInput = document.getElementById('reservationId');
+      const emailInput = document.getElementById('email');
+
+      const errorMessage = document.getElementById('errorMessage');
+      const successMessage = document.getElementById('successMessage');
+      const reservationDetails = document.getElementById('reservationDetails');
+      const cancelSection = document.getElementById('cancelSection');
+
+      const detailId = document.getElementById('detailId');
+      const detailName = document.getElementById('detailName');
+      const detailDate = document.getElementById('detailDate');
+      const detailTime = document.getElementById('detailTime');
+      const detailGuests = document.getElementById('detailGuests');
+      const detailPayment = document.getElementById('detailPayment');
+      const detailStatus = document.getElementById('detailStatus');
+      const detailRequests = document.getElementById('detailRequests');
+      const specialRequestsRow = document.getElementById('specialRequestsRow');
+
+      searchBtn.addEventListener('click', findReservation);
+      cancelBtn.addEventListener('click', cancelReservation);
+
+      function findReservation() {
+        const reservationId = reservationIdInput.value.trim();
+        const email = emailInput.value.trim();
+
+        if (!reservationId || !email) {
+          showError('Please enter both Reservation ID and Email');
+          return;
+        }
+
+        hideMessages();
+
+        fetch(`${API_BASE_URL}/reservation/${reservationId}?t=${Date.now()}`)
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              const reservation = data.reservation;
+
+              if (reservation.email.toLowerCase() !== email.toLowerCase()) {
+                showError('Email does not match our records.');
+                return;
+              }
+
+              displayReservationDetails(reservation);
+
+              if (reservation.status !== 'Cancelled') {
+                cancelSection.style.display = 'block';
+              } else {
+                cancelSection.style.display = 'none';
+              }
+            } else {
+              showError(data.message || 'Reservation not found');
+            }
+          })
+          .catch(err => {
+            showError('Error fetching reservation: ' + err.message);
+          });
+      }
+
+      function cancelReservation() {
+        const reservationId = reservationIdInput.value.trim();
+        const email = emailInput.value.trim();
+
+        if (!reservationId || !email) {
+          showError('Please enter both Reservation ID and Email');
+          return;
+        }
+
+        if (!confirm('Are you sure you want to cancel this reservation?')) {
+          return;
+        }
+
+        hideMessages();
+
+        const payload = {
+          reservationId: reservationId,
+          email: email
+        };
+
+        fetch(`${API_BASE_URL}/cancelReservation`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload)
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            successMessage.innerHTML = `Reservation cancelled successfully.<br><br>${data.refundStatus || ''}`;
+            successMessage.style.display = 'block';
+            cancelSection.style.display = 'none';
+
+            setTimeout(findReservation, 2000);
+          } else {
+            showError(data.message || 'Error cancelling reservation');
+          }
+        })
+        .catch(err => {
+          showError('Error: ' + err.message);
+        });
+      }
+
+      function displayReservationDetails(reservation) {
+        detailId.textContent = reservation.reservation_id;
+        detailName.textContent = reservation.name;
+        detailDate.textContent = formatDate(reservation.date);
+        detailTime.textContent = reservation.time_slot;
+        detailGuests.textContent = reservation.guests;
+        detailPayment.textContent = reservation.payment_status;
+
+        detailStatus.textContent = reservation.status;
+        detailStatus.className = 'reservation-status';
+
+        if (reservation.status === 'Confirmed') {
+          detailStatus.classList.add('status-confirmed');
+        } else if (reservation.status === 'Cancelled') {
+          detailStatus.classList.add('status-cancelled');
+        } else {
+          detailStatus.classList.add('status-pending');
+        }
+
+        if (reservation.special_requests && reservation.special_requests.trim()) {
+          detailRequests.textContent = reservation.special_requests;
+          specialRequestsRow.style.display = 'block';
+        } else {
+          specialRequestsRow.style.display = 'none';
+        }
+
+        reservationDetails.style.display = 'block';
+      }
+
+      function formatDate(dateStr) {
+        const date = new Date(dateStr);
+        return date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      }
+
+      function showError(msg) {
+        errorMessage.textContent = msg;
+        errorMessage.style.display = 'block';
+        successMessage.style.display = 'none';
+      }
+
+      function hideMessages() {
+        errorMessage.style.display = 'none';
+        successMessage.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>

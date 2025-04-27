@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reservation List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #333;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    thead {
+      background-color: #4a90e2;
+      color: white;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: center;
+      border-bottom: 1px solid #ccc;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      margin: 10px;
+      font-size: 16px;
+    }
+
+    button.cancel {
+      background-color: #f39c12;
+    }
+
+    .form-group {
+      margin: 20px 0;
+    }
+
+    select, input[type="date"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    #reservationTable {
+      display: none;
+    }
+
+    #actionButtons {
+      display: none;
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+	<button id="viewSlotsBtn" onclick="window.location.href='/ADMIN'" style="background-color: #007BFF; color: white; border: none; padding: 10px 15px; margin-bottom: 20px; cursor: pointer; border-radius: 4px;">
+	     GO BACK
+	   </button>
+    <h1>All Table Reservations</h1>
+
+    <div class="form-group">
+      <label for="date">Select Reservation Date:</label>
+      <input type="date" id="date" required>
+    </div>
+
+    <div class="form-group">
+      <label for="timeSlot">Select Time Slot:</label>
+      <select id="timeSlot" required>
+        <option value="">Select a Time Slot</option>
+      </select>
+    </div>
+
+    <div id="actionButtons">
+      <button id="bookBtn" onclick="redirectToBooking()">Book</button>
+      <button id="cancelBtn" class="cancel" onclick="redirectToCancel()">Cancel Reservation</button>
+    </div>
+
+    <table id="reservationTable">
+      <thead>
+        <tr>
+          <th>Guests</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+  <script>
+    const dateInput = document.getElementById('date');
+    const timeSlotSelect = document.getElementById('timeSlot');
+    const reservationTable = document.getElementById('reservationTable');
+    const tableBody = document.getElementById('tableBody');
+    const actionButtons = document.getElementById('actionButtons');
+
+    // Load available time slots when a date is selected
+    dateInput.addEventListener('change', () => {
+      const selectedDate = dateInput.value;
+      if (selectedDate) {
+        fetch(`http://localhost:8080/availableTimes?date=${selectedDate}`)
+          .then(res => res.json())
+          .then(data => {
+            timeSlotSelect.innerHTML = '<option value="">Select a Time Slot</option>';
+            if (data.success) {
+              Object.entries(data.availableTimes).forEach(([slot, isAvailable]) => {
+                if (isAvailable) {
+                  const option = document.createElement('option');
+                  option.value = slot;
+                  option.textContent = slot;
+                  timeSlotSelect.appendChild(option);
+                }
+              });
+            }
+          });
+      }
+    });
+
+    // Show reservations and buttons when time is selected
+    timeSlotSelect.addEventListener('change', () => {
+      const selectedDate = dateInput.value;
+      const selectedTime = timeSlotSelect.value;
+
+      if (selectedDate && selectedTime) {
+        fetch("http://localhost:8080/allReservations")
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              const filtered = data.reservations.filter(r => r.date === selectedDate && r.time_slot === selectedTime);
+
+              tableBody.innerHTML = "";
+
+              if (filtered.length > 0) {
+                reservationTable.style.display = 'table';
+                filtered.forEach(res => {
+                  const row = document.createElement("tr");
+                  row.innerHTML = `
+                    <td>${res.guests}</td>
+                    <td>${res.date}</td>
+                    <td>${res.time_slot}</td>
+                    <td>${res.status}</td>
+                  `;
+                  tableBody.appendChild(row);
+                });
+              } else {
+                reservationTable.style.display = 'none';
+              }
+
+              // Show/hide Book/Cancel buttons based on booking count
+              if (filtered.length < 5) {
+                actionButtons.style.display = 'block';
+              } else {
+                actionButtons.style.display = 'none';
+                alert("All 5 tables are booked for this time slot. Please choose another.");
+              }
+            }
+          });
+      }
+    });
+
+    function redirectToBooking() {
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('timeSlot').value;
+      if (date && time) {
+        window.location.href = '/reserve';
+      }
+    }
+
+    function redirectToCancel() {
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('timeSlot').value;
+      if (date && time) {
+        window.location.href = '/canclreservation';
+      }
+    }
+  </script>
+</body>
+</html>

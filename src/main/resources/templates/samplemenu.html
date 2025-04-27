@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Menu</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+
+    body {
+      background-color: #f5f5f5;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      background-color: #1a3c40;
+      color: white;
+      padding: 20px 0;
+      position: relative;
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .back-arrow {
+      margin-right: 15px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .back-arrow:hover {
+      color: #e74c3c;
+    }
+
+    .logo h1 {
+      font-size: 2rem;
+    }
+
+    .cart-icon {
+      position: relative;
+      cursor: pointer;
+      font-size: 1.5rem;
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background-color: #e74c3c;
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 0.8rem;
+    }
+
+    h1, h2, h3 {
+      text-align: center;
+      color: #333;
+    }
+
+    .category-filters {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 30px 0;
+      flex-wrap: wrap;
+    }
+    
+    .category-filter {
+      padding: 10px 20px;
+      background-color: #ddd;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    
+    .category-filter.active {
+      background-color: #1a3c40;
+      color: white;
+    }
+
+    #menu {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 25px;
+      margin-top: 20px;
+    }
+
+    .menu-item {
+      background-color: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .menu-item:hover {
+      transform: translateY(-5px);
+    }
+
+    .menu-item img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .menu-item-details {
+      padding: 15px;
+    }
+
+    .menu-item-name {
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-bottom: 5px;
+      color: #1a3c40;
+    }
+
+    .menu-item-price {
+      color: #e74c3c;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .menu-item-description {
+      color: #666;
+      margin: 5px 0 10px;
+      font-size: 0.9rem;
+    }
+
+    .menu-item-category {
+      background-color: #f0f0f0;
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 10px;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .add-btn {
+      background-color: #1a3c40;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background-color 0.3s;
+      font-weight: bold;
+    }
+
+    .add-btn:hover {
+      background-color: #2b5d63;
+    }
+
+    /* Cart Modal Styles */
+    #cart-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .cart-content {
+      background-color: white;
+      border-radius: 10px;
+      padding: 30px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .cart-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .cart-items {
+      margin-bottom: 30px;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .cart-item-details {
+      flex: 1;
+    }
+
+    .cart-item-name {
+      font-weight: bold;
+    }
+
+    .cart-item-price {
+      color: #e74c3c;
+    }
+
+    .cart-item-quantity {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .quantity-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: #1a3c40;
+      color: white;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    .quantity-value {
+      margin: 0 10px;
+      min-width: 20px;
+      text-align: center;
+    }
+
+    .cart-summary {
+      margin-top: 20px;
+      text-align: right;
+    }
+
+    .cart-total {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .checkout-btn {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      font-size: 16px;
+      width: 100%;
+    }
+
+    .checkout-btn:hover {
+      background-color: #c0392b;
+    }
+
+    /* Payment Modal Styles (Keep existing styles) */
+    #payment-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    
+    .modal-content {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 25px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #777;
+    }
+    
+    .payment-options {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .payment-option {
+      background-color: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 5px;
+      padding: 15px;
+      cursor: pointer;
+      transition: border-color 0.3s, background-color 0.3s;
+    }
+    
+    .payment-option:hover {
+      background-color: #e9ecef;
+      border-color: #adb5bd;
+    }
+    
+    .payment-option.selected {
+      border-color: #007BFF;
+      background-color: #e6f2ff;
+    }
+    
+    .payment-option-title {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .payment-option-description {
+      font-size: 14px;
+      color: #6c757d;
+    }
+    
+    .order-summary {
+      margin-top: 25px;
+      border-top: 1px solid #dee2e6;
+      padding-top: 15px;
+    }
+    
+    .order-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    
+    .order-total {
+      font-weight: bold;
+      font-size: 18px;
+      margin-top: 15px;
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid #dee2e6;
+      padding-top: 15px;
+    }
+    
+    #confirm-payment-btn {
+      background-color: #1a3c40;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 20px;
+      font-size: 16px;
+      width: 100%;
+      transition: background-color 0.3s;
+      font-weight: bold;
+    }
+    
+    #confirm-payment-btn:hover {
+      background-color: #2b5d63;
+    }
+    
+    #screenshot-uploader {
+      display: none;
+      margin-top: 15px;
+    }
+    
+    #payment-screenshot {
+      margin-top: 10px;
+      width: 100%;
+    }
+    
+    .success-message {
+      text-align: center;
+      color: #28a745;
+      font-size: 18px;
+      margin: 20px 0;
+      display: none;
+    }
+    
+    .loader {
+      display: none;
+      text-align: center;
+      margin: 20px 0;
+    }
+    
+    .loader-spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #1a3c40;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+      #menu {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      }
+      
+      .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .cart-item-quantity {
+        margin-top: 10px;
+      }
+	  
+	  button.payment-option {
+	       padding: 20px;
+	       background-color: #f5f5f5;
+	       border: 1px solid #ddd;
+	       cursor: pointer; /* Ensure the pointer cursor is shown */
+	       text-align: center;
+	       margin-top: 20px;
+	       transition: background-color 0.3s ease;
+	       font-size: 18px;
+	     }
+
+	     button.payment-option:hover {
+	       background-color: #e0e0e0; /* Optional: Add hover effect */
+	     }
+
+	     .payment-option-title {
+	       font-size: 18px;
+	       color: #333;
+	     }
+    }
+	
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <div class="logo">
+        <div class="back-arrow" id="backArrow">
+          <i class="fas fa-arrow-left"></i>
+        </div>
+        <h1>Food Menu</h1>
+      </div>
+      <div class="cart-icon" id="cartIcon">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-count" id="cartCount">0</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="category-filters" id="category-filters">
+      <button class="category-filter active" data-category="all">All</button>
+      <!-- Categories will be populated dynamically -->
+    </div>
+	
+    
+    <!-- Menu Section -->
+    <div id="menu"></div>
+  </div>
+
+  <!-- Cart Modal -->
+  <div id="cart-modal">
+    <div class="cart-content">
+      <div class="cart-header">
+        <h2>Your Cart</h2>
+        <button class="cart-close" id="cartClose">&times;</button>
+      </div>
+      <div class="cart-items" id="cartItems">
+        <!-- Cart items will be loaded dynamically -->
+        <p>Your cart is empty.</p>
+      </div>
+      <div class="cart-summary">
+        <div class="cart-total" id="cartTotal">Total: $0.00</div>
+        <button class="checkout-btn" id="checkoutBtn" onclick="showPaymentOptions()">Proceed to Payment</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payment Modal (Keep existing) -->
+  
+  <div id="payment-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Complete Your Order</h3>
+        <button class="close-btn" onclick="closePaymentModal()">&times;</button>
+      </div>
+      
+      <div class="order-summary">
+        <h4>Order Summary</h4>
+        <div id="order-items">
+          <!-- Order items will be populated dynamically -->
+        </div>
+        <div class="order-total">
+          <span>Total Amount:</span>
+          <span>$<span id="modal-total-price">0.00</span></span>
+        </div>
+      </div>
+      <h4>Customer Details</h4>
+      <input type="text" id="customer-name" placeholder="Full Name" style="width: 100%; padding: 10px; margin-bottom: 10px;" required>
+      <input type="text" id="customer-phone" placeholder="Phone Number" style="width: 100%; padding: 10px; margin-bottom: 10px;" required>
+      <textarea id="customer-address" placeholder="Delivery Address" style="width: 100%; padding: 10px; margin-bottom: 20px;" rows="3" required></textarea>
+
+      
+      <h4>Select Payment Method</h4>
+      <div class="payment-options">
+		
+		<button class="payment-option" onclick="selectPaymentMethod('co')">
+		    <span class="payment-option-title">Click here for bank details</span>
+		  </button>
+
+		
+
+        <div class="payment-option" onclick="selectPaymentMethod('screenshot')">
+          <div class="payment-option-title">Upload Payment Screenshot</div>
+          <div class="payment-option-description">Upload a screenshot of your completed payment</div>
+		  
+        </div>
+        <div class="payment-option" onclick="selectPaymentMethod('cod')">
+          <div class="payment-option-title">Cash on Delivery</div>
+          <div class="payment-option-description">Pay with cash when your order is delivered</div>
+        </div>
+      </div>
+      
+      <div id="screenshot-uploader">
+        <input type="file" id="payment-screenshot" accept="image/*">
+      </div>
+      
+      <button id="confirm-payment-btn" onclick="processPayment()">Confirm Order</button>
+      
+      <div class="loader">
+        <div class="loader-spinner"></div>
+        <p>Processing your order...</p>
+      </div>
+      
+      <div class="success-message">
+        <p>Your order has been placed successfully!</p>
+        <button class="checkout-btn" onclick="closePaymentModal()">Continue Shopping</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Global variables
+    let menu = [];
+    let cart = [];
+    let totalPrice = 0;
+    let selectedPaymentMethod = '';
+    let sessionId = generateSessionId();
+
+    // Initialize event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+      // Fetch menu items
+      fetchMenu();
+      
+      // Set up cart icon click event
+      document.getElementById('cartIcon').addEventListener('click', openCartModal);
+      
+      // Set up cart close button
+      document.getElementById('cartClose').addEventListener('click', closeCartModal);
+      
+      // Back arrow functionality
+      document.getElementById('backArrow').addEventListener('click', function() {
+        window.location.href = '/';
+      });
+    });
+
+    function openCartModal() {
+      document.getElementById('cart-modal').style.display = 'flex';
+      updateCartItems(); // Ensure cart content is up to date
+    }
+
+    function closeCartModal() {
+      document.getElementById('cart-modal').style.display = 'none';
+    }
+
+    function updateCartItems() {
+      const cartItemsContainer = document.getElementById('cartItems');
+      cartItemsContainer.innerHTML = '';
+      
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
+        document.getElementById('checkoutBtn').disabled = true;
+      } else {
+        document.getElementById('checkoutBtn').disabled = false;
+        
+        cart.forEach((item, index) => {
+          const itemTotal = item.price * item.quantity;
+          const cartItem = document.createElement('div');
+          cartItem.className = 'cart-item';
+          cartItem.innerHTML = `
+            <div class="cart-item-details">
+              <div class="cart-item-name">${item.name}</div>
+              <div class="cart-item-price">$${item.price.toFixed(2)} × ${item.quantity}</div>
+            </div>
+            <div class="cart-item-quantity">
+              <button class="quantity-btn" onclick="updateItemQuantity(${item.id}, -1)">-</button>
+              <span class="quantity-value">${item.quantity}</span>
+              <button class="quantity-btn" onclick="updateItemQuantity(${item.id}, 1)">+</button>
+              <span style="margin-left: 15px;">$${itemTotal.toFixed(2)}</span>
+            </div>
+          `;
+          
+          cartItemsContainer.appendChild(cartItem);
+        });
+      }
+      
+      // Calculate and update total price
+      totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      document.getElementById('cartTotal').textContent = `Total: $${totalPrice.toFixed(2)}`;
+    }
+
+    // Generate a random session ID
+    function generateSessionId() {
+      return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    }
+
+    function fetchMenu() {
+      // Show loading indicator
+      document.getElementById("menu").innerHTML = '<p style="text-align: center;">Loading menu items...</p>';
+      
+      // Fetch menu items from the backend
+      fetch("http://localhost:8080/api/food/list")
+        .then(response => response.json())
+        .then(data => {
+          menu = data; // Store menu items globally
+          renderMenu(menu);
+          setupCategoryFilters(menu);
+        })
+        .catch(error => {
+          console.error("Error fetching menu:", error);
+          document.getElementById("menu").innerHTML = 
+            '<p style="text-align: center; color: red;">Error loading menu. Please try again later.</p>';
+
+          // Load mock data if API fails
+          loadMockMenuItems();
+        });
+    }
+
+    function loadMockMenuItems() {
+      const mockItems = [
+        {
+          id: 1,
+          name: 'Vegetable Biryani',
+          description: 'Fragrant basmati rice cooked with mixed vegetables and aromatic spices',
+          price: 12.99,
+          category: 'vegetarian',
+          image_url: '/api/placeholder/300/200'
+        },
+        {
+          id: 2,
+          name: 'Butter Chicken',
+          description: 'Tender chicken pieces in a rich and creamy tomato-based curry',
+          price: 15.99,
+          category: 'non-vegetarian',
+          image_url: '/api/placeholder/300/200'
+        },
+        {
+          id: 3,
+          name: 'Mango Lassi',
+          description: 'Sweet and refreshing yogurt drink with mango pulp',
+          price: 4.99,
+          category: 'beverages',
+          image_url: '/api/placeholder/300/200'
+        },
+        {
+          id: 4,
+          name: 'Chef\'s Special Platter',
+          description: 'A curated selection of our chef\'s favorite dishes',
+          price: 24.99,
+          category: 'specials',
+          image_url: '/api/placeholder/300/200'
+        }
+      ];
+      
+      menu = mockItems;
+      renderMenu(menu);
+      setupCategoryFilters(menu);
+    }
+
+    function setupCategoryFilters(menuItems) {
+      const categoriesSet = new Set();
+      menuItems.forEach(item => {
+        if (item.category) {
+          categoriesSet.add(item.category);
+        }
+      });
+      
+      const filterContainer = document.getElementById("category-filters");
+      filterContainer.innerHTML = '<button class="category-filter active" data-category="all">All</button>';
+      
+      categoriesSet.forEach(category => {
+        const button = document.createElement("button");
+        button.className = "category-filter";
+        button.textContent = category;
+        button.dataset.category = category;
+        button.addEventListener("click", function() {
+          filterMenuByCategory(category);
+          
+          // Update active state
+          document.querySelectorAll(".category-filter").forEach(btn => {
+            btn.classList.remove("active");
+          });
+          this.classList.add("active");
+        });
+        
+        filterContainer.appendChild(button);
+      });
+    }
+
+    function filterMenuByCategory(category) {
+      if (category === 'all') {
+        renderMenu(menu);
+      } else {
+        const filteredMenu = menu.filter(item => item.category === category);
+        renderMenu(filteredMenu);
+      }
+    }
+
+    function renderMenu(menuItems) {
+      const menuContainer = document.getElementById("menu");
+      menuContainer.innerHTML = ''; // Clear the existing menu
+      
+      if (menuItems.length === 0) {
+        menuContainer.innerHTML = '<p style="text-align: center;">No menu items available.</p>';
+        return;
+      }
+      
+      menuItems.forEach(item => {
+        let itemElement = document.createElement("div");
+        itemElement.className = "menu-item";
+        
+        // Use placeholder if image URL is not available
+        const imageUrl = item.image_url ? item.image_url : "/api/placeholder/300/180";
+        
+        itemElement.innerHTML = `
+          <img src="${imageUrl}" alt="${item.name}">
+          <div class="menu-item-details">
+            <div class="menu-item-category">${item.category || 'Uncategorized'}</div>
+            <div class="menu-item-name">${item.name}</div>
+            <div class="menu-item-price">$${item.price.toFixed(2)}</div>
+            <div class="menu-item-description">${item.description || 'No description available.'}</div>
+            <button class="add-btn" onclick="addToCart(${item.id})">Add to Cart</button>
+          </div>
+        `;
+        menuContainer.appendChild(itemElement);
+      });
+    }
+
+    function addToCart(itemId) {
+      const item = menu.find(item => item.id === itemId);
+      if (!item) return;
+      
+      // Check if item is already in cart
+      const existingItemIndex = cart.findIndex(cartItem => cartItem.id === item.id);
+      
+      if (existingItemIndex !== -1) {
+        // Increment quantity if item already exists in cart
+        cart[existingItemIndex].quantity += 1;
+      } else {
+        // Add item to cart with quantity 1
+        cart.push({
+          ...item,
+          quantity: 1
+        });
+      }
+      
+      updateCart();
+      
+      // Show brief notification
+      alert(`${item.name} added to cart`);
+    }
+
+    function updateItemQuantity(itemId, change) {
+      const index = cart.findIndex(item => item.id === itemId);
+      if (index === -1) return;
+      
+      cart[index].quantity += change;
+      
+      if (cart[index].quantity <= 0) {
+        // Remove item if quantity becomes 0 or negative
+        cart.splice(index, 1);
+      }
+      
+      updateCart();
+    }
+
+    function updateCart() {
+      // Update cart count in header
+      const cartCount = document.getElementById("cartCount");
+      const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+      cartCount.textContent = totalItems;
+      
+      // Update cart items in cart modal
+      updateCartItems();
+    }
+
+    function showPaymentOptions() {
+      if (cart.length === 0) {
+        alert("Your cart is empty. Please add items to proceed.");
+        return;
+      }
+      
+      const modal = document.getElementById("payment-modal");
+      modal.style.display = "flex";
+      
+      // Close the cart modal
+      closeCartModal();
+      
+      // Update order summary in modal
+      updateOrderSummary();
+      
+      // Reset payment method selection
+      selectedPaymentMethod = '';
+      document.querySelectorAll(".payment-option").forEach(option => {
+        option.classList.remove("selected");
+      });
+      document.getElementById("screenshot-uploader").style.display = "none";
+      
+      // Hide success message and loader
+      document.querySelector(".success-message").style.display = "none";
+      document.querySelector(".loader").style.display = "none";
+      
+      // Show payment options and confirm button
+      document.querySelector(".payment-options").style.display = "flex";
+      document.getElementById("confirm-payment-btn").style.display = "block";
+    }
+
+    function updateOrderSummary() {
+      const orderItemsContainer = document.getElementById("order-items");
+      orderItemsContainer.innerHTML = "";
+      
+      cart.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        const orderItem = document.createElement("div");
+        orderItem.className = "order-item";
+        orderItem.innerHTML = `
+          <span>${item.name} × ${item.quantity}</span>
+          <span>$${itemTotal.toFixed(2)}</span>
+        `;
+        orderItemsContainer.appendChild(orderItem);
+      });
+      
+      document.getElementById("modal-total-price").textContent = totalPrice.toFixed(2);
+    }
+
+    function closePaymentModal() {
+      const modal = document.getElementById("payment-modal");
+      modal.style.display = "none";
+    }
+
+    function selectPaymentMethod(method) {
+      selectedPaymentMethod = method;
+	  
+	  if (method === 'co') {
+	  	      window.location.href = '/bank/view'; // replace with your page URL
+	  	    }
+      
+      // Update UI to show selected payment method
+      document.querySelectorAll(".payment-option").forEach(option => {
+        option.classList.remove("selected");
+      });
+      
+      const selectedOption = document.querySelector(`.payment-option[onclick="selectPaymentMethod('${method}')"]`);
+      if (selectedOption) {
+        selectedOption.classList.add("selected");
+      }
+      
+      // Show screenshot uploader if screenshot method is selected
+      const screenshotUploader = document.getElementById("screenshot-uploader");
+      screenshotUploader.style.display = method === 'screenshot' ? 'block' : 'none';
+    }
+
+    function processPayment() {
+      if (!selectedPaymentMethod) {
+        alert("Please select a payment method.");
+        return;
+      }
+      
+      // Show loading spinner
+      document.querySelector(".loader").style.display = "block";
+      document.getElementById("confirm-payment-btn").style.display = "none";
+      
+	   saveCartToBackend()
+	  	    .then(() => {
+	  	      // Then process the payment
+	  	      return confirmPayment();
+	  	    })
+	  	    .then(() => {
+	  	      // Show success message on successful payment
+	  	      showOrderSuccessMessage();
+	  	    })
+	  	    .catch(error => {
+	  	      console.error("Error processing order:", error);
+	  	      alert("There was an error processing your order. Please try again.");
+	  	      document.querySelector(".loader").style.display = "none";
+	  	      document.getElementById("confirm-payment-btn").style.display = "block";
+	  	    });
+	  	}
+
+	  	function saveCartToBackend() {
+	  	  // Format cart data as expected by the backend
+	  	  const cartData = {
+	  	    sessionId: sessionId,
+	  	    items: cart.map(item => ({
+	  	      foodId: item.id,
+	  	      quantity: item.quantity
+	  	    }))
+	  	  };
+	  	  
+	  	  // Make API call to save cart
+	  	  return fetch("http://localhost:8080/api/food/cart/save", {
+	  	    method: "POST",
+	  	    headers: {
+	  	      "Content-Type": "application/json"
+	  	    },
+	  	    body: JSON.stringify(cartData)
+	  	  })
+	  	  .then(response => {
+	  	    if (!response.ok) {
+	  	      throw new Error("Failed to save cart");
+	  	    }
+	  	    return response.text();
+	  	  });
+	  	}
+
+		function confirmPayment() {
+		  // Prepare payment data based on selected method
+		  const name = document.getElementById("customer-name").value.trim();
+		  const phone = document.getElementById("customer-phone").value.trim();
+		  const address = document.getElementById("customer-address").value.trim();
+
+		  if (!name || !phone || !address) {
+		    alert("Please enter your name, phone number, and address.");
+		    return Promise.reject("Missing customer details");
+		  }
+
+		  if (selectedPaymentMethod === 'screenshot') {
+		    // For screenshot method, we need to handle file upload separately
+		    const fileInput = document.getElementById("payment-screenshot");
+		    if (!fileInput.files[0]) {
+		      alert("Please upload a payment screenshot.");
+		      return Promise.reject(new Error("No screenshot uploaded"));
+		    }
+		    
+		    // First upload the screenshot file
+		    const formData = new FormData();
+		    formData.append('file', fileInput.files[0]);
+		    
+		    // Upload the screenshot first
+		    return fetch("http://localhost:8080/api/upload-screenshot", {
+		      method: "POST",
+		      body: formData
+		    })
+		    .then(response => {
+		      if (!response.ok) {
+		        throw new Error("Failed to upload screenshot");
+		      }
+		      return response.json();
+		    })
+		    .then(fileData => {
+		      // After screenshot is uploaded, confirm the payment with the screenshot URL
+		      const paymentData = {
+		        sessionId: sessionId,
+		        totalAmount: totalPrice,
+		        paymentStatus: "screenshot",
+		        name: name,
+		        phone: phone,
+		        address: address,
+		        paymentScreenshotUrl: fileData.url // Use the URL returned from screenshot upload
+		      };
+		      
+		      // Send the payment confirmation
+		      return fetch("http://localhost:8080/api/payment/confirm", {
+		        method: "POST",
+		        headers: {
+		          "Content-Type": "application/json"
+		        },
+		        body: JSON.stringify(paymentData)
+		      });
+		    })
+		    .then(response => {
+		      if (!response.ok) {
+		        throw new Error("Failed to confirm payment");
+		      }
+		      return response.text();
+		    });
+		  } else {
+		    // For cash on delivery, no file upload needed
+		    const paymentData = {
+		      sessionId: sessionId,
+		      totalAmount: totalPrice,
+		      paymentStatus: "cash_on_delivery",
+		      name: name,
+		      phone: phone,
+		      address: address
+		    };
+		    
+		    return fetch("http://localhost:8080/api/payment/confirm", {
+		      method: "POST",
+		      headers: {
+		        "Content-Type": "application/json"
+		      },
+		      body: JSON.stringify(paymentData)
+		    })
+		    .then(response => {
+		      if (!response.ok) {
+		        throw new Error("Failed to confirm payment");
+		      }
+		      return response.text();
+		    });
+		  }
+		}
+
+	  	function showOrderSuccessMessage() {
+	  	  // Hide loader
+	  	  document.querySelector(".loader").style.display = "none";
+	  	  
+	  	  // Show success message
+	  	  document.querySelector(".success-message").style.display = "block";
+	  	  
+	  	  // Hide payment options
+	  	  document.querySelector(".payment-options").style.display = "none";
+	  	  document.getElementById("screenshot-uploader").style.display = "none";
+	  	  
+	  	  // Clear cart
+	  	  cart = [];
+	  	  updateCart();
+	  	}
+
+	  	// Initialize the menu when the page loads
+	  	document.addEventListener('DOMContentLoaded', fetchMenu);
+	    </script>
+
+	  </body>
+	  </html>

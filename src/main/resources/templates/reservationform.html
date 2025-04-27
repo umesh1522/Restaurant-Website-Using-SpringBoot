@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hotel Umesh - Table Reservation</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: #f5f5f5;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      padding: 40px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .logo-text {
+      color: #f57c00;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    h2 {
+      font-size: 28px;
+      color: #333;
+      margin-bottom: 30px;
+      position: relative;
+    }
+
+    h2:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -10px;
+      width: 50px;
+      height: 4px;
+      background: #f57c00;
+    }
+
+    .form-row {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      flex: 1;
+      min-width: 200px;
+      margin-right: 20px;
+      margin-bottom: 20px;
+    }
+
+    .form-group:last-child {
+      margin-right: 0;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #555;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      transition: border 0.3s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #f57c00;
+      outline: none;
+    }
+
+    textarea {
+      height: 100px;
+      resize: vertical;
+    }
+
+    .btn {
+      width: 100%;
+      height: 50px;
+      background: #f57c00;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 18px;
+      margin-top: 20px;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #e65100;
+    }
+
+    .response-message {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 5px;
+      text-align: center;
+      font-size: 16px;
+      display: none;
+    }
+
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .time-slots {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .time-slot {
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .time-slot:hover {
+      background-color: #fff3e0;
+    }
+
+    .time-slot.selected {
+      background-color: #f57c00;
+      color: white;
+      border-color: #e65100;
+    }
+
+    .time-slot.unavailable {
+      background-color: #f5f5f5;
+      color: #aaa;
+      cursor: not-allowed;
+      border-color: #ddd;
+    }
+
+    .payment-section {
+      margin-top: 30px;
+      border-top: 1px solid #eee;
+      padding-top: 30px;
+    }
+
+    .payment-options {
+      display: flex;
+      margin-bottom: 20px;
+    }
+
+    .payment-option {
+      margin-right: 30px;
+      display: flex;
+      align-items: center;
+    }
+
+    .payment-option input {
+      width: auto;
+      margin-right: 8px;
+    }
+
+    #onlinePaymentFields {
+      display: none;
+      border: 1px solid #eee;
+      border-radius: 5px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    /* Steps indicator */
+    .steps {
+      display: flex;
+      margin-bottom: 30px;
+    }
+
+    .step {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      position: relative;
+    }
+
+    .step:not(:last-child):after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: 0;
+      width: 100%;
+      height: 2px;
+      background: #ddd;
+      z-index: -1;
+    }
+
+    .step-number {
+      width: 30px;
+      height: 30px;
+      background: #ddd;
+      color: #fff;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 5px;
+    }
+
+    .step.active .step-number {
+      background: #f57c00;
+    }
+
+    .step.active .step-title {
+      color: #f57c00;
+      font-weight: bold;
+    }
+
+    #bookingForm, #paymentForm, #confirmationSection {
+      display: none;
+    }
+
+    #bookingForm.active, #paymentForm.active, #confirmationSection.active {
+      display: block;
+    }
+    
+    /* Payment summary styling */
+    #paymentSummary {
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 5px;
+      margin-bottom: 30px;
+    }
+    
+    #paymentSummary p {
+      margin-bottom: 10px;
+    }
+    
+    /* Confirmation details styling */
+    #confirmationDetails {
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 5px;
+      margin: 20px 0;
+    }
+    
+    #confirmationDetails p {
+      margin-bottom: 10px;
+    }
+    
+    /* Screenshot upload section */
+    .screenshot-upload {
+      margin-top: 20px;
+      padding: 20px;
+      border: 1px dashed #ddd;
+      border-radius: 5px;
+      text-align: center;
+    }
+    
+    .file-input-wrapper {
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+    }
+    
+    .file-input-wrapper input[type=file] {
+      font-size: 100px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+    
+    .file-button {
+      background: #f0f0f0;
+      border: 1px solid #ddd;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+	<button id="viewSlotsBtn" onclick="window.location.href='/table'" style="background-color: #007BFF; color: white; border: none; padding: 10px 15px; margin-bottom: 20px; cursor: pointer; border-radius: 4px;">
+	    GO BACK
+	   </button>
+    <div class="logo">
+      <svg width="40" height="40" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="45" fill="#fff1f0" />
+        <path d="M30,35 C30,30 40,25 50,25 C60,25 70,30 70,35 L70,65 C70,75 60,80 50,80 C40,80 30,75 30,65 Z" fill="#f57c00" />
+        <rect x="30" y="40" width="40" height="5" rx="2" fill="#fff" />
+        <rect x="30" y="50" width="40" height="5" rx="2" fill="#fff" />
+        <rect x="30" y="60" width="40" height="5" rx="2" fill="#fff" />
+      </svg>
+      <span class="logo-text">Hotel Umesh</span>
+    </div>
+
+    <div class="steps">
+      <div class="step active" id="step1">
+        <div class="step-number">1</div>
+        <div class="step-title">Reservation Details</div>
+      </div>
+      <div class="step" id="step2">
+        <div class="step-number">2</div>
+        <div class="step-title">Payment</div>
+      </div>
+      <div class="step" id="step3">
+        <div class="step-number">3</div>
+        <div class="step-title">Confirmation</div>
+      </div>
+    </div>
+
+    <!-- Booking Form -->
+    <div id="bookingForm" class="active">
+      <h2>Reserve a Table</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" required>
+        </div>
+        <div class="form-group">
+          <label for="guests">Number of Guests</label>
+          <select id="guests" required>
+            <option value="1">1 Person</option>
+            <option value="2" selected>2 People</option>
+            <option value="3">3 People</option>
+            <option value="4">4 People</option>
+            <option value="5">5 People</option>
+            <option value="6">6 People</option>
+            <option value="7">7 People</option>
+            <option value="8">8+ People (Please specify in special requests)</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="date">Date</label>
+          <input type="date" id="date" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Available Times</label>
+        <div class="time-slots" id="timeSlots">
+          <!-- Time slots will be populated here -->
+        </div>
+        <input type="hidden" id="selectedTime">
+      </div>
+      <div class="form-group">
+        <label for="specialRequests">Special Requests (Optional)</label>
+        <textarea id="specialRequests"></textarea>
+      </div>
+      <div class="form-group payment-options">
+        <label>Payment Method:</label>
+        <div class="payment-option">
+          <input type="radio" id="cashPayment" name="paymentMethod" value="cash" checked>
+          <label for="cashPayment">Pay at Restaurant</label>
+        </div>
+        <div class="payment-option">
+          <input type="radio" id="onlinePayment" name="paymentMethod" value="online">
+          <label for="onlinePayment">Pay Online</label>
+        </div>
+        <div class="payment-option">
+          <input type="radio" id="screenshotPayment" name="paymentMethod" value="screenshot">
+          <label for="screenshotPayment">UPI/Bank Transfer + Screenshot</label>
+        </div>
+      </div>
+      <button class="btn" id="continueToPayment">Continue</button>
+    </div>
+
+    <!-- Payment Form -->
+    <div id="paymentForm">
+      <h2>Payment Information</h2>
+      <div id="paymentSummary">
+        <p><strong>Reservation Date:</strong> <span id="summaryDate"></span></p>
+        <p><strong>Time:</strong> <span id="summaryTime"></span></p>
+        <p><strong>Number of Guests:</strong> <span id="summaryGuests"></span></p>
+        <p><strong>Booking Fee:</strong> <span id="summaryFee">₹200</span></p>
+      </div>
+      
+      <div id="onlinePaymentFields">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="cardName">Name on Card</label>
+            <input type="text" id="cardName" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="cardNumber">Card Number</label>
+            <input type="text" id="cardNumber" maxlength="16" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="expiryDate">Expiry Date</label>
+            <input type="text" id="expiryDate" placeholder="MM/YYYY" required>
+          </div>
+          <div class="form-group">
+            <label for="cvv">CVV</label>
+            <input type="text" id="cvv" maxlength="3" required>
+          </div>
+        </div>
+      </div>
+      
+      <div id="screenshotPaymentFields" style="display: none;">
+        <div class="screenshot-upload">
+          <p>Please transfer ₹200 to the following accounts:</p>
+          <p><strong>UPI:</strong> hotelumesh@ybl</p>
+          <p><strong>Bank Details:</strong> Hotel Umesh, HDFC Bank, Acc No: 12345678901234, IFSC: HDFC0001234</p>
+          <p>Upload the screenshot of your payment:</p>
+          <div class="file-input-wrapper">
+            <button class="file-button">Select Screenshot</button>
+            <input type="file" id="paymentScreenshot" accept="image/*">
+          </div>
+          <div id="screenshotPreview" style="margin-top: 15px;"></div>
+        </div>
+      </div>
+      
+      <div id="cashPaymentInfo">
+        <p>You've selected to pay at the restaurant. No payment is required now. A booking fee of ₹200 will be added to your final bill.</p>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <button class="btn" id="backToDetails" style="background: #ccc;">Back</button>
+        </div>
+        <div class="form-group">
+          <button class="btn" id="confirmReservation">Confirm Reservation</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confirmation Section -->
+    <div id="confirmationSection">
+      <h2>Reservation Confirmed!</h2>
+      <div class="response-message success" id="successMessage" style="display: block;">
+        Thank you for your reservation at Hotel Umesh. We look forward to serving you!
+      </div>
+      <div id="confirmationDetails">
+        <p><strong>Reservation ID:</strong> <span id="confirmationId"></span></p>
+        <p><strong>Name:</strong> <span id="confirmationName"></span></p>
+        <p><strong>Date:</strong> <span id="confirmationDate"></span></p>
+        <p><strong>Time:</strong> <span id="confirmationTime"></span></p>
+        <p><strong>Number of Guests:</strong> <span id="confirmationGuests"></span></p>
+        <p><strong>Payment Status:</strong> <span id="confirmationPayment"></span></p>
+      </div>
+      <p style="margin-top: 20px;">A confirmation email has been sent to <span id="confirmationEmail"></span>.</p>
+      <button class="btn" id="returnToHome" style="margin-top: 30px;">Return to Home</button>
+    </div>
+
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Variables to store reservation data
+      let reservationData = {};
+      let reservationId = null;
+      
+      // Base API URL - change this to match your Spring Boot server
+      const API_BASE_URL = 'http://localhost:8080';
+
+      // DOM Elements
+      const dateInput = document.getElementById('date');
+      const timeSlotsContainer = document.getElementById('timeSlots');
+      const cashPaymentRadio = document.getElementById('cashPayment');
+      const onlinePaymentRadio = document.getElementById('onlinePayment');
+      const screenshotPaymentRadio = document.getElementById('screenshotPayment');
+      const onlinePaymentFields = document.getElementById('onlinePaymentFields');
+      const screenshotPaymentFields = document.getElementById('screenshotPaymentFields');
+      const cashPaymentInfo = document.getElementById('cashPaymentInfo');
+      const paymentScreenshotInput = document.getElementById('paymentScreenshot');
+      const screenshotPreview = document.getElementById('screenshotPreview');
+      
+      // Step navigation elements
+      const bookingForm = document.getElementById('bookingForm');
+      const paymentForm = document.getElementById('paymentForm');
+      const confirmationSection = document.getElementById('confirmationSection');
+      const step1 = document.getElementById('step1');
+      const step2 = document.getElementById('step2');
+      const step3 = document.getElementById('step3');
+      
+      // Buttons
+      const continueToPaymentBtn = document.getElementById('continueToPayment');
+      const backToDetailsBtn = document.getElementById('backToDetails');
+      const confirmReservationBtn = document.getElementById('confirmReservation');
+      const returnToHomeBtn = document.getElementById('returnToHome');
+
+      // Set minimum date to today
+      const today = new Date();
+      const formattedDate = today.toISOString().split('T')[0];
+      dateInput.min = formattedDate;
+      dateInput.value = formattedDate;
+
+      // Load available times when date is selected
+      dateInput.addEventListener('change', loadAvailableTimes);
+      
+      // Preview payment screenshot
+      paymentScreenshotInput.addEventListener('change', function() {
+        if (this.files && this.files[0]) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            screenshotPreview.innerHTML = `<img src="${e.target.result}" alt="Payment Screenshot" style="max-width: 100%; max-height: 200px; margin-top: 10px;">`;
+          }
+          reader.readAsDataURL(this.files[0]);
+        }
+      });
+      
+      // Load times initially
+      loadAvailableTimes();
+
+      // Toggle payment fields based on selected method
+      cashPaymentRadio.addEventListener('change', togglePaymentFields);
+      onlinePaymentRadio.addEventListener('change', togglePaymentFields);
+      screenshotPaymentRadio.addEventListener('change', togglePaymentFields);
+
+      // Button event listeners
+      continueToPaymentBtn.addEventListener('click', proceedToPayment);
+      backToDetailsBtn.addEventListener('click', goBackToDetails);
+      confirmReservationBtn.addEventListener('click', confirmReservation);
+      returnToHomeBtn.addEventListener('click', () => window.location.href = '/cancelreservationdata');
+
+      // Function to load available times
+      function loadAvailableTimes() {
+        const selectedDate = dateInput.value;
+        
+        // Clear previous time slots
+        timeSlotsContainer.innerHTML = '';
+        
+        // Show loading state
+        timeSlotsContainer.innerHTML = '<p>Loading available times...</p>';
+        
+        // For demo purposes, simulate API call
+        setTimeout(() => {
+          const demoAvailableTimes = {
+            "12:00 PM": 1,
+            "12:30 PM": 1,
+            "1:00 PM": 0, // Unavailable
+            "1:30 PM": 1,
+            "2:00 PM": 1,
+            "2:30 PM": 1,
+            "6:00 PM": 0, // Unavailable
+            "6:30 PM": 1,
+            "7:00 PM": 1,
+            "7:30 PM": 0, // Unavailable
+            "8:00 PM": 1,
+            "8:30 PM": 1,
+            "9:00 PM": 1
+          };
+          
+          displayTimeSlots({
+            success: true,
+            availableTimes: demoAvailableTimes
+          });
+        }, 500);
+        
+        // Uncomment this to use the actual API
+        
+        fetch(`${API_BASE_URL}/availableTimes?date=${selectedDate}`)
+          .then(response => response.json())
+          .then(data => {
+            displayTimeSlots(data);
+          })
+          .catch(error => {
+            timeSlotsContainer.innerHTML = `<p>Error loading times: ${error.message}</p>`;
+          });
+        
+      }
+      
+      function displayTimeSlots(data) {
+        timeSlotsContainer.innerHTML = '';
+        
+        if (data.success) {
+          const availableTimes = data.availableTimes;
+          
+          // Sort the times
+          const sortedTimes = Object.keys(availableTimes).sort();
+          
+          sortedTimes.forEach(time => {
+            const isAvailable = availableTimes[time] === 1;
+            const timeSlot = document.createElement('div');
+            timeSlot.className = `time-slot ${isAvailable ? '' : 'unavailable'}`;
+            timeSlot.textContent = time;
+            
+            if (isAvailable) {
+              timeSlot.addEventListener('click', () => selectTimeSlot(timeSlot, time));
+            }
+            
+            timeSlotsContainer.appendChild(timeSlot);
+          });
+        } else {
+          timeSlotsContainer.innerHTML = `<p>Error: ${data.message}</p>`;
+        }
+      }
+
+      // Function to select a time slot
+      function selectTimeSlot(slot, time) {
+        // Remove selected class from all slots
+        document.querySelectorAll('.time-slot').forEach(el => {
+          el.classList.remove('selected');
+        });
+        
+        // Add selected class to clicked slot
+        slot.classList.add('selected');
+        
+        // Store selected time
+        document.getElementById('selectedTime').value = time;
+      }
+
+      // Function to toggle payment fields
+      function togglePaymentFields() {
+        onlinePaymentFields.style.display = 'none';
+        screenshotPaymentFields.style.display = 'none';
+        cashPaymentInfo.style.display = 'none';
+        
+        if (onlinePaymentRadio.checked) {
+          onlinePaymentFields.style.display = 'block';
+        } else if (screenshotPaymentRadio.checked) {
+          screenshotPaymentFields.style.display = 'block';
+        } else {
+          cashPaymentInfo.style.display = 'block';
+        }
+      }
+
+      // Function to proceed to payment step
+      function proceedToPayment() {
+        // Validate form
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const guests = document.getElementById('guests').value;
+        const date = document.getElementById('date').value;
+        const time = document.getElementById('selectedTime').value;
+        
+        if (!name || !email || !phone || !guests || !date || !time) {
+          alert('Please fill all required fields and select a time slot.');
+          return;
+        }
+        
+        // Store data
+        reservationData = {
+          name: name,
+          email: email,
+          phone: phone,
+          guests: guests,
+          date: date,
+          time: time,
+          specialRequests: document.getElementById('specialRequests').value,
+          paymentMethod: document.querySelector('input[name="paymentMethod"]:checked').value
+        };
+        
+        // Update summary
+        document.getElementById('summaryDate').textContent = new Date(date).toLocaleDateString();
+        document.getElementById('summaryTime').textContent = time;
+        document.getElementById('summaryGuests').textContent = guests;
+        
+        // Switch to payment step
+        bookingForm.classList.remove('active');
+        paymentForm.classList.add('active');
+        step1.classList.remove('active');
+        step2.classList.add('active');
+        
+        // Initialize payment fields display
+        togglePaymentFields();
+      }
+
+      // Function to go back to details
+      function goBackToDetails() {
+        paymentForm.classList.remove('active');
+        bookingForm.classList.add('active');
+        step2.classList.remove('active');
+        step1.classList.add('active');
+      }
+
+      // Function to confirm reservation
+      function confirmReservation() {
+        // For demo purposes, simulate API call and generate a reservation ID
+        reservationId = 'HU-' + new Date().toISOString().slice(0,10).replace(/-/g,'') + '-' + Math.floor(1000 + Math.random() * 9000);
+        
+        if (onlinePaymentRadio.checked) {
+          const cardName = document.getElementById('cardName').value;
+          const cardNumber = document.getElementById('cardNumber').value;
+          const expiryDate = document.getElementById('expiryDate').value;
+          const cvv = document.getElementById('cvv').value;
+          
+          if (!cardName || !cardNumber || !expiryDate || !cvv) {
+            alert('Please fill all payment details.');
+            return;
+          }
+          
+          // Add payment details to reservation data
+          reservationData.cardDetails = {
+            cardName: cardName,
+            cardNumber: cardNumber,
+            expiryDate: expiryDate,
+            cvv: cvv
+          };
+          
+          showConfirmation('online');
+        } else if (screenshotPaymentRadio.checked) {
+          const screenshot = paymentScreenshotInput.files[0];
+          
+          if (!screenshot) {
+            alert('Please upload a payment screenshot.');
+            return;
+          }
+          
+          showConfirmation('screenshot');
+        } else {
+          showConfirmation('cash');
+        }
+        
+        // Uncomment this to use the actual API
+        
+        // Send reservation data to server
+        fetch(`${API_BASE_URL}/bookTable`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(reservationData)
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            reservationId = data.reservationId;
+            
+            // If online payment is selected and successful, process the payment
+            if (onlinePaymentRadio.checked) {
+              processPayment();
+            } else if (screenshotPaymentRadio.checked) {
+              uploadScreenshot();
+            } else {
+              // Show confirmation
+              showConfirmation('cash');
+            }
+          } else {
+            alert(`Reservation failed: ${data.message}`);
+          }
+        })
+        .catch(error => {
+          alert(`Error: ${error.message}`);
+        });
+        
+      }
+
+      // Function to process payment
+      function processPayment() {
+        const paymentData = {
+          reservationId: reservationId,
+          cardNumber: reservationData.cardDetails.cardNumber,
+          cardName: reservationData.cardDetails.cardName,
+          expiryDate: reservationData.cardDetails.expiryDate,
+          cvv: reservationData.cardDetails.cvv
+        };
+        
+        fetch(`${API_BASE_URL}/processPayment`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(paymentData)
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            showConfirmation('online');
+          } else {
+            alert(`Payment failed: ${data.message}`);
+          }
+        })
+        .catch(error => {
+          alert(`Error processing payment: ${error.message}`);
+        });
+      }
+      
+      // Function to upload screenshot
+      function uploadScreenshot() {
+        const formData = new FormData();
+        formData.append('reservationId', reservationId);
+        formData.append('screenshot', paymentScreenshotInput.files[0]);
+        
+        fetch(`${API_BASE_URL}/uploadScreenshot`, {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            showConfirmation('screenshot');
+          } else {
+            alert(`Screenshot upload failed: ${data.message}`);
+          }
+        })
+        .catch(error => {
+          alert(`Error uploading screenshot: ${error.message}`);
+        });
+      }
+
+      // Function to show confirmation
+      function showConfirmation(paymentType) {
+        // Update confirmation details
+        document.getElementById('confirmationId').textContent = reservationId;
+        document.getElementById('confirmationName').textContent = reservationData.name;
+        document.getElementById('confirmationDate').textContent = new Date(reservationData.date).toLocaleDateString();
+        document.getElementById('confirmationTime').textContent = reservationData.time;
+        document.getElementById('confirmationGuests').textContent = reservationData.guests;
+        document.getElementById('confirmationEmail').textContent = reservationData.email;
+        
+        if (paymentType === 'online') {
+          document.getElementById('confirmationPayment').textContent = 'Paid Online';
+          document.getElementById('successMessage').textContent = 'Thank you for your reservation and payment! Your table is confirmed.';
+        } else if (paymentType === 'screenshot') {
+          document.getElementById('confirmationPayment').textContent = 'Paid via Bank Transfer/UPI';
+          document.getElementById('successMessage').textContent = 'Thank you for your reservation and payment! Your table is confirmed pending payment verification.';
+        } else {
+          document.getElementById('confirmationPayment').textContent = 'Pay at Restaurant';
+          document.getElementById('successMessage').textContent = 'Thank you for your reservation! Please pay at the restaurant upon arrival.';
+        }
+        
+        // Switch to confirmation step
+        paymentForm.classList.remove('active');
+        confirmationSection.classList.add('active');
+        step2.classList.remove('active');
+        step3.classList.add('active');
+        
+        // Optional: Send confirmation email (would be handled server-side)
+        console.log(`Confirmation email sent to ${reservationData.email}`);
+      }
+    });
+  </script>
+</body>
+</html>

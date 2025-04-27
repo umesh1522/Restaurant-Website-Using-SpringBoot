@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Management Dashboard</title>
+	<style>
+	  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+	  * {
+	    margin: 0;
+	    padding: 0;
+	    box-sizing: border-box;
+	    font-family: 'Poppins', sans-serif;
+	  }
+
+	  html {
+	    scroll-behavior: smooth;
+	  }
+
+	  body {
+	    background-color: #fffdf5;
+	    color: #333;
+	    min-height: 100vh;
+	    overflow-x: hidden;
+	  }
+
+	  .header {
+	    background-color: #ff7a00;
+	    color: white;
+	    padding: 1.5rem 2rem;
+	    display: flex;
+	    justify-content: space-between;
+	    align-items: center;
+	    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+	    border-bottom: 4px solid #ffa94d;
+	  }
+
+	  .header h1 {
+	    font-size: 1.8rem;
+	    font-weight: 600;
+	  }
+
+	  .logout-btn {
+	    background-color: #e74c3c;
+	    color: white;
+	    border: none;
+	    padding: 0.6rem 1.2rem;
+	    border-radius: 6px;
+	    font-weight: 500;
+	    cursor: pointer;
+	    transition: all 0.3s ease;
+	  }
+
+	  .logout-btn:hover {
+	    background-color: #c0392b;
+	    transform: translateY(-2px);
+	    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	  }
+
+	  .container {
+	    max-width: 1200px;
+	    margin: 2rem auto;
+	    padding: 0 1.5rem;
+	  }
+
+	  .welcome-message {
+	    background-color: #fff7f0;
+	    padding: 1.5rem;
+	    border-radius: 10px;
+	    margin-bottom: 2rem;
+	    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+	    text-align: center;
+	  }
+
+	  .welcome-message h2 {
+	    color: #ff7a00;
+	    margin-bottom: 0.5rem;
+	  }
+
+	  .welcome-message p {
+	    color: #666;
+	  }
+
+	  .admin-buttons {
+	    display: grid;
+	    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	    gap: 1.5rem;
+	  }
+
+	  .admin-btn {
+	    background-color: white;
+	    border: 2px solid #ffe0cc;
+	    border-radius: 10px;
+	    padding: 2rem 1.5rem;
+	    text-align: center;
+	    font-size: 1.1rem;
+	    font-weight: 500;
+	    color: #ff7a00;
+	    cursor: pointer;
+	    transition: all 0.3s ease;
+	    display: flex;
+	    flex-direction: column;
+	    align-items: center;
+	    justify-content: center;
+	    box-shadow: 0 6px 12px rgba(255, 122, 0, 0.05);
+	  }
+
+	  .admin-btn i {
+	    font-size: 2rem;
+	    margin-bottom: 1rem;
+	    color: #ff7a00;
+	    transition: color 0.3s;
+	  }
+
+	  .admin-btn:hover {
+	    transform: translateY(-5px);
+	    box-shadow: 0 10px 20px rgba(255, 122, 0, 0.2);
+	    background-color: #ff7a00;
+	    color: white;
+	  }
+
+	  .admin-btn:hover i {
+	    color: white;
+	  }
+
+	  .website-link {
+	    text-align: center;
+	    margin-top: 2rem;
+	  }
+
+	  .website-link a {
+	    display: inline-block;
+	    background-color: #ff7a00;
+	    color: white;
+	    padding: 0.8rem 1.5rem;
+	    border-radius: 6px;
+	    text-decoration: none;
+	    font-weight: 500;
+	    transition: all 0.3s ease;
+	  }
+
+	  .website-link a:hover {
+	    background-color: #e86600;
+	    transform: translateY(-2px);
+	    box-shadow: 0 4px 10px rgba(255, 122, 0, 0.3);
+	  }
+
+	  .footer {
+	    text-align: center;
+	    padding: 1.5rem;
+	    margin-top: 2rem;
+	    color: #999;
+	    font-size: 0.9rem;
+	  }
+
+	  body::-webkit-scrollbar {
+	    width: 10px;
+	  }
+
+	  body::-webkit-scrollbar-thumb {
+	    background-color: #ff7a00;
+	    border-radius: 10px;
+	  }
+
+	  body::-webkit-scrollbar-track {
+	    background-color: #fff3e6;
+	  }
+	  
+	  .card-container {
+	    perspective: 1000px;
+	  }
+
+	  .card {
+	    width: 100%;
+	    height: 180px;
+	    position: relative;
+	    transform-style: preserve-3d;
+	    transition: transform 0.8s;
+	  }
+
+	  .card-container:hover .card {
+	    transform: rotateY(180deg);
+	  }
+
+	  .front, .back {
+	    width: 100%;
+	    height: 100%;
+	    position: absolute;
+	    border: 2px solid #ffe0cc;
+	    border-radius: 10px;
+	    padding: 2rem 1.5rem;
+	    background: white;
+	    backface-visibility: hidden;
+	    display: flex;
+	    flex-direction: column;
+	    align-items: center;
+	    justify-content: center;
+	    font-size: 1.1rem;
+	    font-weight: 500;
+	    color: #ff7a00;
+	    box-shadow: 0 6px 12px rgba(255, 122, 0, 0.05);
+	  }
+
+	  .front {
+	    z-index: 2;
+	  }
+
+	  .back {
+	    background: #fff7f0;
+	    transform: rotateY(180deg);
+	    gap: 1rem;
+	  }
+
+	  .flip-btn {
+	    background-color: #ff7a00;
+	    color: white;
+	    border: none;
+	    padding: 0.6rem 1rem;
+	    border-radius: 6px;
+	    font-size: 0.95rem;
+	    cursor: pointer;
+	    transition: 0.3s ease;
+	    width: 140px;
+	  }
+
+	  .flip-btn:hover {
+	    background-color: #e86600;
+	    transform: scale(1.05);
+	  }
+
+	</style>
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <h1>Admin Dashboard</h1>
+        <button class="logout-btn">Logout</button>
+    </header>
+
+    <div class="container">
+        <div class="welcome-message">
+            <h2>Welcome to Admin Management Dashboard</h2>
+            <p>Manage your website content, users, and more from this central location.</p>
+        </div>
+		
+		
+
+        <div class="admin-buttons">
+   
+			
+			<div class="card-container">
+						   <div class="card">
+						     <div class="front admin-btn">
+						       <div style="text-align: center;">
+						         
+						         Visit To Different Sections
+						       </div>
+						     </div>
+						     <div class="back">
+						      <i class="fas fa-arrow-right icon"></i><br />
+						   </div>
+						   </div>
+						 </div>
+			<div class="card-container">
+			   <div class="card">
+			     <div class="front admin-btn">
+			       <div style="text-align: center;">
+			         <i class="fas fa-utensils icon"></i><br />
+			         Menu
+			       </div>
+			     </div>
+			     <div class="back">
+			       <button onclick="location.href='/adminmenu'" class="flip-btn">Admin Menu CRUD</button>
+			       <button onclick="location.href='/samplemenu'" class="flip-btn">User Menu</button>
+			     </div>
+			   </div>
+			 </div>
+
+			
+			
+			<div class="card-container">
+			  <div class="card">
+			    <div class="front admin-btn">
+			      <i class="fas fa-users icon"></i>
+			      Users
+			    </div>
+			    <div class="back">
+			      <button onclick="location.href='/NormalUsers'" class="flip-btn">Normal User</button>
+			      <button onclick="location.href='/Users1'" class="flip-btn">Admin User</button>
+			    </div>
+			  </div>
+			</div>
+			<div class="card-container">
+						  <div class="card">
+						    <div class="front admin-btn">
+						      <i class="fas fa-shopping-cart icon"></i>
+						      Orders
+						    </div>
+						    <div class="back">
+						      <button onclick="location.href='/C'" class="flip-btn">View Orders</button>
+						      
+						    </div>
+						  </div>
+						</div>
+
+           
+            
+			<div class="card-container">
+					  <div class="card">
+					    <div class="front admin-btn">
+					      <i class="fas fa-calendar-check iconn"></i>
+					      Table Booking
+					    </div>
+					    <div class="back">
+							<button onclick="location.href='/admintimeslots'" class="flip-btn">Add Today's timeslots</button>
+					      <button onclick="location.href='/cancelreservationdata'" class="flip-btn">TableBooking</button>
+						  <button onclick="location.href='/q'" class="flip-btn">Delete Table</button>
+					    
+					    </div>
+					  </div>
+					</div>
+
+
+					<div class="card-container">
+					  <div class="card">
+					    <div class="front admin-btn">
+					      <i class="fas fa-university icon"></i>
+					      Bank Details
+					    </div>
+					    <div class="back">
+					      <button onclick="location.href='/adminbank'" class="flip-btn">Add Bank Details</button>
+					      
+					    </div>
+					  </div>
+					</div>
+     
+			<div class="card-container">
+								  <div class="card">
+								    <div class="front admin-btn">
+								      <i class="fas fa-envelope icon"></i>
+							Contact
+								    </div>
+								    <div class="back">
+								      <button onclick="location.href='/admincontactmessages'" class="flip-btn">Messages</button>
+								    
+								    </div>
+								  </div>
+								</div>
+								
+								<div class="card-container">
+																  <div class="card">
+																    <div class="front admin-btn">
+																      <i class="fas fa-comment icon"></i>
+															Feedback
+																    </div>
+																    <div class="back">
+																      <button onclick="location.href='/adminfeedback'" class="flip-btn">Messages</button>
+																    
+																    </div>
+																  </div>
+																</div>
+          
+        </div>
+
+        <div class="website-link">
+            <a href="/">
+                <i class="fas fa-globe"></i> Go to Main Website
+            </a>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Admin Dashboard. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Add click event listeners
+        document.querySelectorAll('.admin-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const section = this.textContent.trim();
+                alert(`Navigating to ${section} section`);
+                // Here you would typically redirect to the specific admin section
+            });
+        });
+
+        // Logout functionality
+        document.querySelector('.logout-btn').addEventListener('click', function() {
+            if(confirm('Are you sure you want to logout?')) {
+                alert('Logging out...');
+                // Here you would handle the logout logic
+                 window.location.href = '/land';
+            }
+        });
+    </script>
+</body>
+</html>

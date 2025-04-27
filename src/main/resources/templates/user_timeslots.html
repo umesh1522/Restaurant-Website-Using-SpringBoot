@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User - View Time Slots</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 30px;
+        }
+        .container {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            max-width: 800px;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 { text-align: center; }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        /* Style for Back Button */
+        #backBtn {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Back Arrow Button -->
+    <button id="backBtn" onclick="window.location.href='/table'" style="background-color: transparent; border: none; cursor: pointer; font-size: 20px; margin-bottom: 20px;">
+        &#8592; Back
+    </button>
+
+    <h2>User - Available Time Slots</h2>
+
+    <h3>Current Time Slots</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Time Slot</th>
+                <th>Table No.</th>
+                <th>Seating</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Loop through the slots and display each one -->
+            <tr th:each="slot : ${slots}">
+                <td th:text="${slot['date']}">2025-04-20</td>  <!-- Date from timeslots table -->
+                <td th:text="${slot['time_slot']}">7:00 PM</td>  <!-- Time slot -->
+                <td th:text="${slot['table_number']}">T1</td>  <!-- Table number -->
+                <td th:text="${slot['seating_capacity']}">4</td>  <!-- Seating capacity -->
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

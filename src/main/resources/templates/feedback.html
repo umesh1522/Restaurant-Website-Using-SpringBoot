@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Feedback Form</title>
+    <style>
+		
+		#backBtn {
+		    background: linear-gradient(135deg, #00c6ff, #0072ff); /* gradient blue */
+		    color: white;
+		    border: none;
+		    padding: 12px 20px;
+		    margin-bottom: 20px;
+		    cursor: pointer;
+		    border-radius: 8px;
+		    font-size: 16px;
+		    font-weight: bold;
+		    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
+		    transition: all 0.3s ease;
+		}
+
+		#backBtn:hover {
+		    background: linear-gradient(135deg, #0072ff, #00c6ff);
+		    box-shadow: 0 6px 14px rgba(0, 123, 255, 0.6);
+		    transform: translateY(-2px);
+		}
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2c3e50;
+        }
+        
+        .form-header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-header p {
+            color: #7f8c8d;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        .rating-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .rating-group {
+            margin-bottom: 1rem;
+        }
+        
+        .rating-group label {
+            margin-bottom: 0.5rem;
+        }
+        
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+        }
+        
+        .star-rating input {
+            display: none;
+        }
+        
+        .star-rating label {
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 24 24'%3e%3cpath d='M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z' fill='%23d3d3d3'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            transition: all 0.2s;
+        }
+        
+        .star-rating label:hover,
+        .star-rating label:hover ~ label,
+        .star-rating input:checked ~ label {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 24 24'%3e%3cpath d='M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z' fill='%23f39c12'/%3e%3c/svg%3e");
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+            display: none;
+        }
+        
+        .success-message {
+            text-align: center;
+            padding: 1rem;
+            background-color: #d4edda;
+            color: #155724;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+		<button id="backBtn" onclick="window.location.href='/'">
+					    &#8592; GO TO Home
+					</button>
+        <div class="form-header">
+			
+            <h1>Hotel Starlight Feedback</h1>
+            <p>We appreciate your feedback to help us improve our services</p>
+        </div>
+        
+        <div class="success-message" id="successMessage">
+            Thank you for your feedback! We appreciate your time.
+        </div>
+        
+        <form id="feedbackForm">
+            <!-- Guest Information -->
+            <div class="form-group">
+                <label for="guestName">Name*</label>
+                <input type="text" id="guestName" name="guestName" class="form-control" required>
+                <div class="error-message" id="guestNameError">Please enter your name</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address*</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+                <div class="error-message" id="emailError">Please enter a valid email address</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="roomNumber">Room Number(Optional:If not select :00)</label>
+                <input type="text" id="roomNumber" name="roomNumber" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label for="stayDate">Date of Stay(Optional:If not Stay select today's date')</label>
+                <input type="date" id="stayDate" name="stayDate" class="form-control" required>
+                <div class="error-message" id="stayDateError">Please select your stay date</div>
+            </div>
+            
+            <!-- Ratings -->
+            <div class="rating-container">
+                <div class="rating-group">
+                    <label>Overall Experience*</label>
+                    <div class="star-rating">
+                        <input type="radio" id="overall-5" name="overallRating" value="5" required/>
+                        <label for="overall-5"></label>
+                        <input type="radio" id="overall-4" name="overallRating" value="4"/>
+                        <label for="overall-4"></label>
+                        <input type="radio" id="overall-3" name="overallRating" value="3"/>
+                        <label for="overall-3"></label>
+                        <input type="radio" id="overall-2" name="overallRating" value="2"/>
+                        <label for="overall-2"></label>
+                        <input type="radio" id="overall-1" name="overallRating" value="1"/>
+                        <label for="overall-1"></label>
+                    </div>
+                    <div class="error-message" id="overallRatingError">Please rate your overall experience</div>
+                </div>
+                
+                <div class="rating-group">
+                    <label>Cleanliness</label>
+                    <div class="star-rating">
+                        <input type="radio" id="cleanliness-5" name="cleanlinessRating" value="5"/>
+                        <label for="cleanliness-5"></label>
+                        <input type="radio" id="cleanliness-4" name="cleanlinessRating" value="4"/>
+                        <label for="cleanliness-4"></label>
+                        <input type="radio" id="cleanliness-3" name="cleanlinessRating" value="3"/>
+                        <label for="cleanliness-3"></label>
+                        <input type="radio" id="cleanliness-2" name="cleanlinessRating" value="2"/>
+                        <label for="cleanliness-2"></label>
+                        <input type="radio" id="cleanliness-1" name="cleanlinessRating" value="1"/>
+                        <label for="cleanliness-1"></label>
+                    </div>
+                </div>
+                
+                <div class="rating-group">
+                    <label>Service & Staff</label>
+                    <div class="star-rating">
+                        <input type="radio" id="service-5" name="serviceRating" value="5"/>
+                        <label for="service-5"></label>
+                        <input type="radio" id="service-4" name="serviceRating" value="4"/>
+                        <label for="service-4"></label>
+                        <input type="radio" id="service-3" name="serviceRating" value="3"/>
+                        <label for="service-3"></label>
+                        <input type="radio" id="service-2" name="serviceRating" value="2"/>
+                        <label for="service-2"></label>
+                        <input type="radio" id="service-1" name="serviceRating" value="1"/>
+                        <label for="service-1"></label>
+                    </div>
+                </div>
+                
+                <div class="rating-group">
+                    <label>Amenities & Facilities</label>
+                    <div class="star-rating">
+                        <input type="radio" id="amenities-5" name="amenitiesRating" value="5"/>
+                        <label for="amenities-5"></label>
+                        <input type="radio" id="amenities-4" name="amenitiesRating" value="4"/>
+                        <label for="amenities-4"></label>
+                        <input type="radio" id="amenities-3" name="amenitiesRating" value="3"/>
+                        <label for="amenities-3"></label>
+                        <input type="radio" id="amenities-2" name="amenitiesRating" value="2"/>
+                        <label for="amenities-2"></label>
+                        <input type="radio" id="amenities-1" name="amenitiesRating" value="1"/>
+                        <label for="amenities-1"></label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="comments">Additional Comments</label>
+                <textarea id="comments" name="comments" class="form-control" rows="5" placeholder="Please share your experience, suggestions, or concerns..."></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-block">Submit Feedback</button>
+        </form>
+    </div>
+    
+    <script src="feedback.js"></script>
+</body>
+</html>

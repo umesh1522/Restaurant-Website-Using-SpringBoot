@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bank Details</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #74ebd5, #ACB6E5);
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .bank-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .bank-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            width: 300px;
+            transition: transform 0.3s ease;
+        }
+        .bank-card:hover {
+            transform: translateY(-5px);
+        }
+        .qr-code {
+            width: 100%;
+            height: auto;
+            margin-top: 15px;
+        }
+        .field {
+            margin-bottom: 10px;
+        }
+        .field label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Bank Details for Payment</h1>
+
+<div class="bank-container">
+    <div th:each="detail : ${bankDetails}" class="bank-card">
+        <div class="field">
+            <label>Bank Name:</label> 
+            <span th:text="${detail.bank_name}">Bank Name</span>
+        </div>
+        <div class="field">
+            <label>Account Number:</label> 
+            <span th:text="${detail.account_number}">Account Number</span>
+        </div>
+        <div class="field">
+            <label>IFSC Code:</label> 
+            <span th:text="${detail.ifsc_code}">IFSC Code</span>
+        </div>
+        <div class="field">
+            <label>Account Holder:</label> 
+            <span th:text="${detail.account_holder}">Account Holder</span>
+        </div>
+        <div class="field">
+            <label>Branch Name:</label> 
+            <span th:text="${detail.branch_name}">Branch Name</span>
+        </div>
+
+        <!-- Show QR code if available -->
+        <div th:if="${detail.qr_code_base64}">
+            <img th:src="'data:image/png;base64,' + ${detail.qr_code_base64}" alt="QR Code" class="qr-code"/>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

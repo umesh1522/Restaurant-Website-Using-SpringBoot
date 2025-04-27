@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Us - Yogesh Hotel</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+
+    body {
+      background-color: #f4f4f4;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .back-arrow {
+      margin: 20px;
+      display: flex;
+      align-items: center;
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #e74c3c;
+    }
+
+    .back-arrow span {
+      font-size: 2rem;
+      margin-right: 10px;
+    }
+
+    #AboutUS {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    #AH {
+      color: #e74c3c;
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    #h2i {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.3;
+    }
+
+    .highlight {
+      color: #e74c3c;
+      font-weight: 700;
+    }
+
+    #AboutUS p {
+      font-size: 1.1rem;
+      color: #555;
+      margin-bottom: 1.5rem;
+    }
+
+    .about-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .about-image {
+      flex: 1;
+      min-width: 300px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .about-image img {
+      width: 100%;
+      height: auto;
+    }
+
+    .about-text {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .feature {
+      flex: 1;
+      min-width: 250px;
+      background-color: #fff;
+      padding: 1.5rem;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    .feature i {
+      font-size: 2.5rem;
+      color: #e74c3c;
+      margin-bottom: 1rem;
+    }
+
+    .team-section {
+      margin-top: 4rem;
+      text-align: center;
+    }
+
+    .team-members {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .team-member {
+      max-width: 300px;
+    }
+
+    .team-member img {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 1rem;
+      border: 4px solid #e74c3c;
+    }
+
+    .history-section {
+      margin-top: 4rem;
+      padding: 3rem;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+    }
+
+    .milestones {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .milestone {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .year {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #e74c3c;
+      min-width: 80px;
+    }
+
+    @media (max-width: 768px) {
+      #h2i {
+        font-size: 2rem;
+      }
+
+      .about-content, .features, .team-members {
+        flex-direction: column;
+      }
+
+      .about-image, .about-text {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Back to Homepage -->
+  <a href="/" class="back-arrow">
+    <span>⬅️</span> Back to Homepage
+  </a>
+
+  <!-- About Us Section -->
+  <div id="AboutUS">
+    <h5 id="AH">About Us</h5>
+    <h2 id="h2i">Discover your <span class="highlight">favorite</span><br> food within our <span class="highlight">restaurant</span></h2>
+    <p>Yogesh Hotel is one of the most famous hotels for top-quality VEG & Non-Veg food.<br> We’re especially known for seafood and <span class="highlight">authentic fish dishes</span>.</p>
+
+    <!-- About Image + Story -->
+    <div class="about-content">
+      <div class="about-image">
+        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c" 
+     alt="Hotel Exterior View" class="hotel-img">
+      </div>
+      <div class="about-text">
+        <h3>Our Story</h3>
+        <p>Founded in 2005 by Chef Yogesh Kumar, we began as a cozy family-run eatery serving soulful, traditional food. Today, Yogesh Hotel is a name that stands for taste, warmth, and hospitality.</p>
+        <p>Our dishes blend regional authenticity with bold flavors. Sourced from the best local farms and coasts, every plate is crafted with love and pride.</p>
+      </div>
+    </div>
+
+    <!-- Features -->
+    <div class="features">
+      <div class="feature">
+        <i class="fas fa-utensils">🍽️</i>
+        <h3>Authentic Cuisine</h3>
+        <p>Time-tested family recipes that hit home with every bite.</p>
+      </div>
+      <div class="feature">
+        <i class="fas fa-fish">🐟</i>
+        <h3>Fresh Seafood</h3>
+        <p>Daily catch from the local coast, turned into delicious memories.</p>
+      </div>
+      <div class="feature">
+        <i class="fas fa-leaf">🥬</i>
+        <h3>Veggie Heaven</h3>
+        <p>Plant-based delights that win over even meat lovers.</p>
+      </div>
+    </div>
+
+   <div class="team-section">
+  <h2>Meet Our <span class="highlight">Team</span></h2>
+  <p>The creative minds behind your favorite dishes</p>
+  <div class="team-members">
+    <div class="team-member">
+      <img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Chef Yogesh Kumar" />
+      <h3>Chef Yogesh Kumar</h3>
+      <p>Founder & Executive Chef</p>
+    </div>
+    <div class="team-member">
+      <img src="https://images.unsplash.com/photo-1581299894007-aaa50297cf16?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Chef Priya Sharma" />
+      <h3>Chef Priya Sharma</h3>
+      <p>Head Chef, Veg Cuisine</p>
+    </div>
+    <div class="team-member">
+      <img src="https://images.unsplash.com/photo-1622021142947-da7dedc7c39a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Chef Rajesh Patel" />
+      <h3>Chef Rajesh Patel</h3>
+      <p>Seafood Specialist</p>
+    </div>
+  </div>
+</div>
+
+    <!-- History Section -->
+    <div class="history-section">
+      <h2>Our <span class="highlight">Journey</span></h2>
+      <p>From humble beginnings to culinary destination</p>
+
+      <div class="milestones">
+        <div class="milestone">
+          <div class="year">2005</div>
+          <div class="description">
+            <h3>The Beginning</h3>
+            <p>Started as a family-run eatery with just 20 seats.</p>
+          </div>
+        </div>
+        <div class="milestone">
+          <div class="year">2010</div>
+          <div class="description">
+            <h3>Expansion</h3>
+            <p>Expanded seating and focused on seafood excellence.</p>
+          </div>
+        </div>
+        <div class="milestone">
+          <div class="year">2015</div>
+          <div class="description">
+            <h3>Recognized Excellence</h3>
+            <p>Awarded for best regional seafood and innovation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Animated Login Form</title>
+  <script src="ForgotPwd.js"></script>
+  <style>
+  	/* General Reset */
+  	* {
+  	    margin: 0;
+  	    padding: 0;
+  	    box-sizing: border-box;
+  	    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  	}
+
+  	body {
+  	    background: #ffffff;
+  	    min-height: 100vh;
+  	    display: flex;
+  	    justify-content: center;
+  	    align-items: center;
+  	    overflow: hidden;
+  	    position: relative;
+  	}
+
+  	/* Login Container */
+  	.container {
+  	    position: relative;
+  	    width: 100%;
+  	    max-width: 400px;
+  	    padding: 40px;
+  	    background: #ffffff; /* White background */
+  	    border-radius: 15px;
+  	    box-shadow: 0 0 20px rgba(245, 124, 0, 0.3);
+  	    z-index: 10;
+  	}
+
+  	/* Heading */
+  	.login-box h2 {
+  	    color: #f57c00;
+  	    text-align: center;
+  	    margin-bottom: 25px;
+  	}
+
+  	.input-box input {
+  	    width: 100%;
+  	    padding: 12px 10px;
+  	    font-size: 16px;
+  	    background: white;
+  	    border: none;
+  	    border-bottom: 2px solid #f57c00;
+  	    color: black;
+  	    transition: all 0.3s ease;
+  	    border-radius: 4px;
+  	}
+
+  	/* Submit Button */
+  	.btn {
+  	    width: 100%;
+  	    padding: 12px;
+  	    background-color: #f57c00;
+  	    color: #fff;
+  	    border: none;
+  	    font-size: 16px;
+  	    cursor: pointer;
+  	    transition: background 0.3s ease;
+  	    border-radius: 5px;
+  	}
+
+  	.btn:hover {
+  	    background-color: orange;
+  	}
+
+  	/* Navigation Links */
+  	.signup-link {
+  	    text-align: center;
+  	    margin-top: 10px;
+  	}
+
+  	.signup-link a {
+  	    color: #f57c00;
+  	    text-decoration: none;
+  	    transition: color 0.3s ease;
+  	}
+
+  	.signup-link a:hover {
+  	    color: orange;
+  	}
+
+  	/* Background Dots/Animation */
+  	.container span {
+  	    position: absolute;
+  	    bottom: -40px;
+  	    width: 10px;
+  	    height: 10px;
+  	    background: orange;
+  	    border-radius: 50%;
+  	    animation: animate 20s linear infinite;
+  	    animation-delay: calc(var(--i) * 0.3s);
+  	}
+
+  	@keyframes animate {
+  	    0% {
+  	        transform: translateY(0) scale(1);
+  	        opacity: 1;
+  	    }
+  	    100% {
+  	        transform: translateY(-1000px) scale(0.5);
+  	        opacity: 0;
+  	    }
+  	}
+  </style>
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="container">
+  <div class="login-box">
+    <h2 id="">Forgot Password</h2>
+    <h2 id="responseMessage"></h2>
+	<form id="formid" onsubmit="handleForgotPassword(event)">
+	  <div class="input-box">
+	    <input name="email" type="email" id="username" required>
+	    <label>Email</label>
+	  </div>
+	  <div class="input-box">
+	    <input name="newpassword" type="password" id="newpsd" required>
+	    <label>New Password</label>
+	  </div>
+	  <div class="input-box">
+	    <input name="confirmpassword" type="password" id="confirmpwd" required>
+	    <label>Confirm Password</label>
+	  </div>
+	  <button type="submit" class="btn">Submit</button>
+	  <div class="signup-link">
+	                      <a href="/logauth">Login</a>
+	                  </div>
+	                  <div class="signup-link">
+	                      <a href="/land">Home</a>
+	                  </div>
+	</form>
+
+  </div>
+  <span style="--i:0;"></span>
+  <span style="--i:1;"></span>
+  <span style="--i:2;"></span>
+  <span style="--i:3;"></span>
+  <span style="--i:4;"></span>
+  <span style="--i:5;"></span>
+  <span style="--i:6;"></span>
+  <span style="--i:7;"></span>
+  <span style="--i:8;"></span>
+  <span style="--i:9;"></span>
+  <span style="--i:10;"></span>
+  <span style="--i:11;"></span>
+  <span style="--i:12;"></span>
+  <span style="--i:13;"></span>
+  <span style="--i:14;"></span>
+  <span style="--i:15;"></span>
+  <span style="--i:16;"></span>
+  <span style="--i:17;"></span>
+  <span style="--i:18;"></span>
+  <span style="--i:19;"></span>
+  <span style="--i:20;"></span>
+  <span style="--i:21;"></span>
+  <span style="--i:22;"></span>
+  <span style="--i:23;"></span>
+  <span style="--i:24;"></span>
+  <span style="--i:25;"></span>
+  <span style="--i:26;"></span>
+  <span style="--i:27;"></span>
+  <span style="--i:28;"></span>
+  <span style="--i:29;"></span>
+  <span style="--i:30;"></span>
+  <span style="--i:31;"></span>
+  <span style="--i:32;"></span>
+  <span style="--i:33;"></span>
+  <span style="--i:34;"></span>
+  <span style="--i:35;"></span>
+  <span style="--i:36;"></span>
+  <span style="--i:37;"></span>
+  <span style="--i:38;"></span>
+  <span style="--i:39;"></span>
+  <span style="--i:40;"></span>
+  <span style="--i:41;"></span>
+  <span style="--i:42;"></span>
+  <span style="--i:43;"></span>
+  <span style="--i:44;"></span>
+  <span style="--i:45;"></span>
+  <span style="--i:46;"></span>
+  <span style="--i:47;"></span>
+  <span style="--i:48;"></span>
+  <span style="--i:49;"></span>
+</div>
+<!-- partial -->
+  
+</body>
+</html>
