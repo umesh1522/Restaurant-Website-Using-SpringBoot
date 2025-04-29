@@ -303,7 +303,7 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      const API_BASE_URL = 'http://localhost:8080';
+    
 
       const searchBtn = document.getElementById('searchBtn');
       const cancelBtn = document.getElementById('cancelBtn');
@@ -339,7 +339,7 @@
 
         hideMessages();
 
-        fetch(`${API_BASE_URL}/reservation/${reservationId}?t=${Date.now()}`)
+        fetch(`/reservation/${reservationId}?t=${Date.now()}`)
           .then(response => response.json())
           .then(data => {
             if (data.success) {
@@ -386,7 +386,7 @@
           email: email
         };
 
-        fetch(`${API_BASE_URL}/cancelReservation`, {
+        fetch(`/cancelReservation`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

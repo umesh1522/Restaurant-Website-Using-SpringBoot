@@ -238,7 +238,7 @@
     dateInput.addEventListener('change', () => {
       const selectedDate = dateInput.value;
       if (selectedDate) {
-        fetch(`http://localhost:8080/availableTimes?date=${selectedDate}`)
+        fetch(`/availableTimes?date=${selectedDate}`)
           .then(res => res.json())
           .then(data => {
             timeSlotSelect.innerHTML = '<option value="">Select a Time Slot</option>';
@@ -262,7 +262,7 @@
       const selectedTime = timeSlotSelect.value;
 
       if (selectedDate && selectedTime) {
-        fetch("http://localhost:8080/allReservations")
+        fetch('/allReservations')
           .then(res => res.json())
           .then(data => {
             if (data.success) {

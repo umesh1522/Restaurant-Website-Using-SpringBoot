@@ -545,7 +545,7 @@
         loader.style.display = "block";
         noRecords.style.display = "none";
         
-        const res = await fetch("http://localhost:8080/api/food/orders");
+        const res = await fetch('/api/food/orders');
         const data = await res.json();
 
         const tableBody = document.querySelector("#orders-table tbody");
@@ -724,7 +724,7 @@
       if (!confirmDelete) return;
 
       try {
-        const res = await fetch(`http://localhost:8080/api/food/orders/${sessionId}`, {
+        const res = await fetch(`/api/food/orders/${sessionId}`, {
           method: "DELETE"
         });
 

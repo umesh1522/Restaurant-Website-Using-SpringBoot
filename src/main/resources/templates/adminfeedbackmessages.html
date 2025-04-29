@@ -127,7 +127,7 @@
   <script>
     // Load feedback statistics
     function loadStats() {
-      fetch('http://localhost:8080/feedbackStats')
+      fetch('/feedbackStats')
         .then(response => response.json())
         .then(data => {
           const container = document.getElementById("statsContainer");
@@ -182,9 +182,9 @@
 
     // Load feedback messages with filtering
     function loadFeedback(isRead = null) {
-      let url = 'http://localhost:8080/allFeedback'; // default to all feedback
+      let url = '/allFeedback'; // default to all feedback
       if (isRead !== null) {
-        url = `http://localhost:8080/feedbackByReadStatus?isRead=${isRead}`;
+        url = `/feedbackByReadStatus?isRead=${isRead}`;
       }
 
       fetch(url)
@@ -234,7 +234,7 @@
 
     // Mark feedback as read
     function markAsRead(id) {
-      fetch(`http://localhost:8080/markFeedbackAsRead/${id}`, {
+      fetch(`/markFeedbackAsRead/${id}`, {
         method: 'PUT',
       })
       .then(response => response.json())
@@ -248,7 +248,7 @@
     
     // Mark feedback as unread
     function markAsUnread(id) {
-      fetch(`http://localhost:8080/markFeedbackAsUnread/${id}`, {
+      fetch(`/markFeedbackAsUnread/${id}`, {
         method: 'PUT',
       })
       .then(response => response.json())
@@ -263,7 +263,7 @@
     // Delete feedback
     function deleteFeedback(id) {
       if (confirm('Are you sure you want to delete this feedback?')) {
-        fetch(`http://localhost:8080/deleteFeedback/${id}`, {
+        fetch(`/deleteFeedback/${id}`, {
           method: 'DELETE',
         })
         .then(response => response.json())

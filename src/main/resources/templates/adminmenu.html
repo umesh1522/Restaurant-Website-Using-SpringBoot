@@ -305,20 +305,17 @@
                 }
             });
         });
-		"http://localhost:8080/api/food/orders"
+		
 		function loadMenuItems() {
-		    fetch("http://localhost:8080/api/food/list")
+		    fetch('/api/food/list')
 		        .then(response => response.json())
 		        .then(data => {
 		            const menuItemsList = document.getElementById('menuItemsList');
 		            menuItemsList.innerHTML = '';
-		            
-		            data.forEach(item => {
-		                const row = document.createElement('tr');
-		                // Add the base URL to the image path
-		                const imageUrl = item.image_url.startsWith('http') ? 
-		                    item.image_url : 
-		                    'http://localhost:8080' + item.image_url;
+					data.forEach(item => {
+					                const row = document.createElement('tr');
+					                // Use the image URL directly without adding localhost prefix
+					                const imageUrl = item.image_url;
 		                
 		                row.innerHTML = `
 		                    <td>${item.id}</td>

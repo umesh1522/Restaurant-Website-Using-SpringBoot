@@ -68,9 +68,9 @@
   <script>
     // Load messages with filtering
     function loadContacts(isRead = null) {
-      let url = 'http://localhost:8080/allContacts'; // default to all contacts
+      let url = '/allContacts'; // default to all contacts
       if (isRead !== null) {
-        url = `http://localhost:8080/contactsByReadStatus?isRead=${isRead}`;
+        url = `/contactsByReadStatus?isRead=${isRead}`;
       }
 
       fetch(url)
@@ -101,7 +101,7 @@
 
     // Mark message as read
     function markAsRead(id) {
-      fetch(`http://localhost:8080/markAsRead/${id}`, {
+      fetch(`/markAsRead/${id}`, {
         method: 'PUT',
       })
       .then(response => response.json())
@@ -115,7 +115,7 @@
     // Delete message
     function deleteMessage(id) {
       if (confirm('Are you sure you want to delete this message?')) {
-        fetch(`http://localhost:8080/deleteContact/${id}`, {
+        fetch(`/deleteContact/${id}`, {
           method: 'DELETE',
         })
         .then(response => response.json())

@@ -501,7 +501,7 @@
       let reservationId = null;
       
       // Base API URL - change this to match your Spring Boot server
-      const API_BASE_URL = 'http://localhost:8080';
+     
 
       // DOM Elements
       const dateInput = document.getElementById('date');
@@ -599,7 +599,7 @@
         
         // Uncomment this to use the actual API
         
-        fetch(`${API_BASE_URL}/availableTimes?date=${selectedDate}`)
+        fetch(`/availableTimes?date=${selectedDate}`)
           .then(response => response.json())
           .then(data => {
             displayTimeSlots(data);
@@ -756,7 +756,7 @@
         // Uncomment this to use the actual API
         
         // Send reservation data to server
-        fetch(`${API_BASE_URL}/bookTable`, {
+        fetch(`/bookTable`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -797,7 +797,7 @@
           cvv: reservationData.cardDetails.cvv
         };
         
-        fetch(`${API_BASE_URL}/processPayment`, {
+        fetch(`/processPayment`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -823,7 +823,7 @@
         formData.append('reservationId', reservationId);
         formData.append('screenshot', paymentScreenshotInput.files[0]);
         
-        fetch(`${API_BASE_URL}/uploadScreenshot`, {
+        fetch(`/uploadScreenshot`, {
           method: 'POST',
           body: formData
         })

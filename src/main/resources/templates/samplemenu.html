@@ -678,7 +678,7 @@
       document.getElementById("menu").innerHTML = '<p style="text-align: center;">Loading menu items...</p>';
       
       // Fetch menu items from the backend
-      fetch("http://localhost:8080/api/food/list")
+      fetch('/api/food/list')
         .then(response => response.json())
         .then(data => {
           menu = data; // Store menu items globally
@@ -967,7 +967,7 @@
 	  	  };
 	  	  
 	  	  // Make API call to save cart
-	  	  return fetch("http://localhost:8080/api/food/cart/save", {
+	  	  return fetch('/api/food/cart/save', {
 	  	    method: "POST",
 	  	    headers: {
 	  	      "Content-Type": "application/json"
@@ -1006,7 +1006,7 @@
 		    formData.append('file', fileInput.files[0]);
 		    
 		    // Upload the screenshot first
-		    return fetch("http://localhost:8080/api/upload-screenshot", {
+		    return fetch('/api/upload-screenshot', {
 		      method: "POST",
 		      body: formData
 		    })
@@ -1029,7 +1029,7 @@
 		      };
 		      
 		      // Send the payment confirmation
-		      return fetch("http://localhost:8080/api/payment/confirm", {
+		      return fetch('/api/payment/confirm', {
 		        method: "POST",
 		        headers: {
 		          "Content-Type": "application/json"
@@ -1054,7 +1054,7 @@
 		      address: address
 		    };
 		    
-		    return fetch("http://localhost:8080/api/payment/confirm", {
+		    return fetch('/api/payment/confirm', {
 		      method: "POST",
 		      headers: {
 		        "Content-Type": "application/json"
