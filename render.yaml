@@ -52,7 +52,6 @@ services:
   name: mysql-db
   env: docker
   plan: free
-  dockerfilePath: ""  # Optional: can omit or keep blank
   disk:
     name: data
     mountPath: /var/lib/mysql
