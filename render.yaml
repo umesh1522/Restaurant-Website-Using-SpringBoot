@@ -47,24 +47,22 @@ services:
       - key: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC_CORE_JDBCTEMPLATE
         value: DEBUG
 
-  # MySQL Database Service
-  - type: pserv
-    name: mysql-db
-    env: docker
-    plan: free
-    image:
-      name: mysql
-      tag: "8"
-    disk:
-      name: data
-      mountPath: /var/lib/mysql
-      sizeGB: 1
-    envVars:
-      - key: MYSQL_DATABASE
-        value: hotel
-      - key: MYSQL_USER
-        generateValue: true
-      - key: MYSQL_PASSWORD
-        generateValue: true
-      - key: MYSQL_ROOT_PASSWORD
-        generateValue: true
+ # MySQL Database Service
+- type: pserv
+  name: mysql-db
+  env: docker
+  plan: free
+  dockerfilePath: ""  # Optional: can omit or keep blank
+  disk:
+    name: data
+    mountPath: /var/lib/mysql
+    sizeGB: 1
+  envVars:
+    - key: MYSQL_DATABASE
+      value: hotel
+    - key: MYSQL_USER
+      generateValue: true
+    - key: MYSQL_PASSWORD
+      generateValue: true
+    - key: MYSQL_ROOT_PASSWORD
+      generateValue: true
