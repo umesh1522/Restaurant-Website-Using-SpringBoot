@@ -47,6 +47,7 @@ services:
       - key: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC_CORE_JDBCTEMPLATE
         value: DEBUG
 
+# MySQL Database Service
 - type: pserv
   name: mysql-db
   env: docker
@@ -64,3 +65,4 @@ services:
       generateValue: true
     - key: MYSQL_ROOT_PASSWORD
       generateValue: true
+
