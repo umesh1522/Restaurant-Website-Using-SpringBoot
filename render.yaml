@@ -61,7 +61,10 @@ services:
     name: mysql-db
     env: docker
     plan: free
-    image: mysql:8
+   image:
+  name: mysql
+  tag: "8"
+
     disk:
       name: data
       mountPath: /var/lib/mysql
