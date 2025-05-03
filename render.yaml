@@ -1,37 +1,10 @@
 services:
-  # Spring Boot API Service
   - type: web
-    name: MajorProject
+    name: hotel-app
     env: docker
-    repo: https://github.com/umesh1522/Restaurant-Website-Using-SpringBoot.git
+    plan: free
     dockerfilePath: ./Dockerfile
-    healthCheckPath: /
-    autoDeploy: true
     envVars:
-      - key: SPRING_APPLICATION_NAME
-        value: MajorProject
-      - key: SERVER_PORT
-        value: 8080
-      - key: JAVA_OPTS
-        value: "-Xmx512m -Xms256m"
-      - key: SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE
-        value: 10MB
-      - key: SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE
-        value: 10MB
-      - key: SPRING_JPA_HIBERNATE_DDL_AUTO
-        value: update
-      - key: SPRING_JPA_SHOW_SQL
-        value: "true"
-      - key: SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT
-        value: org.hibernate.dialect.MySQL8Dialect
-      - key: SPRING_WEB_RESOURCES_STATIC_LOCATIONS
-        value: "classpath:/static/,file:uploads/"
-      - key: SPRING_DATASOURCE_URL
-        fromService:
-          name: mysql-db
-          type: pserv
-          property: connectionString
-          envVarName: JDBC_DATABASE_URL
       - key: SPRING_DATASOURCE_USERNAME
         fromService:
           name: mysql-db
@@ -47,21 +20,21 @@ services:
       - key: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC_CORE_JDBCTEMPLATE
         value: DEBUG
 
-# MySQL Database Service
-- type: pserv
-  name: mysql-db
-  env: docker
-  plan: free
-  disk:
-    name: data
-    mountPath: /var/lib/mysql
-    sizeGB: 1
-  envVars:
-    - key: MYSQL_DATABASE
-      value: hotel
-    - key: MYSQL_USER
-      generateValue: true
-    - key: MYSQL_PASSWORD
-      generateValue: true
-    - key: MYSQL_ROOT_PASSWORD
-      generateValue: true
+  - type: pserv
+    name: mysql-db
+    env: docker
+    plan: free
+    dockerfilePath: "" # leave blank since using built-in MySQL
+    disk:
+      name: data
+      mountPath: /var/lib/mysql
+      sizeGB: 1
+    envVars:
+      - key: MYSQL_DATABASE
+        value: hotel
+      - key: MYSQL_USER
+        generateValue: true
+      - key: MYSQL_PASSWORD
+        generateValue: true
+      - key: MYSQL_ROOT_PASSWORD
+        generateValue: true
