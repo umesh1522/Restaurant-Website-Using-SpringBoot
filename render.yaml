@@ -47,14 +47,7 @@ services:
     env: docker
     plan: standard
     repo: https://github.com/umesh1522/Restaurant-Website-Using-SpringBoot.git
-    buildCommand: echo "Building MySQL service"
-    startCommand: |
-      docker run --name mysql-db \
-        -e MYSQL_ROOT_PASSWORD="${MYSQL_ROOT_PASSWORD}" \
-        -e MYSQL_DATABASE=hotel \
-        -v ${RENDER_MOUNT_PATH}:/var/lib/mysql \
-        -p 3306:3306 \
-        mysql:8
+    dockerfilePath: ./mysql.Dockerfile
     envVars:
       - key: MYSQL_ROOT_PASSWORD
         generateValue: true
