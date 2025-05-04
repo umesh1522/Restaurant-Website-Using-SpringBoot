@@ -53,7 +53,6 @@ services:
       # Logging settings
       - key: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC_CORE_JDBCTEMPLATE
         value: DEBUG
-
   # MySQL Database Service
   - type: pserv
     name: mysql-db
