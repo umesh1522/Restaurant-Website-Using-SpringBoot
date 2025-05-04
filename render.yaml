@@ -3,7 +3,7 @@ services:
   - type: web
     name: MajorProject
     env: docker
-    repo: https://github.com/umesh1522/Authentication-Login-Springboot.git
+    repo: https://github.com/umesh1522/Restaurant-Website-Using-SpringBoot.git
     dockerfilePath: ./Dockerfile
     healthCheckPath: /
     # Automatically builds and deploys on push to main branch
@@ -14,61 +14,47 @@ services:
         value: MajorProject
       - key: SERVER_PORT
         value: 8080
-      - key: JAVA_OPTS
-        value: "-Xmx512m -Xms256m"
-      # Upload settings
-      - key: SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE
-        value: 10MB
-      - key: SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE
-        value: 10MB
-      # JPA/Hibernate settings
       - key: SPRING_JPA_HIBERNATE_DDL_AUTO
         value: update
       - key: SPRING_JPA_SHOW_SQL
         value: "true"
       - key: SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT
         value: org.hibernate.dialect.MySQL8Dialect
+      # Upload settings
+      - key: SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE
+        value: 10MB
+      - key: SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE
+        value: 10MB
       # Static resources
       - key: SPRING_WEB_RESOURCES_STATIC_LOCATIONS
         value: "classpath:/static/,file:uploads/"
-      # Database connection - using Render MySQL service
+      # Database connection
       - key: SPRING_DATASOURCE_URL
-        fromService:
-          name: mysql-db
-          type: pserv
-          property: connectionString
-          envVarName: JDBC_DATABASE_URL
+        value: jdbc:mysql://mysql-db:3306/hotel
       - key: SPRING_DATASOURCE_USERNAME
-        fromService:
-          name: mysql-db
-          type: pserv
-          property: username
+        value: root
       - key: SPRING_DATASOURCE_PASSWORD
-        fromService:
-          name: mysql-db
-          type: pserv
-          property: password
+        value: ${MYSQL_ROOT_PASSWORD}
       - key: SPRING_DATASOURCE_DRIVER_CLASS_NAME
         value: com.mysql.cj.jdbc.Driver
       # Logging settings
       - key: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC_CORE_JDBCTEMPLATE
         value: DEBUG
+  
   # MySQL Database Service
   - type: pserv
     name: mysql-db
     env: docker
-    plan: free
-    dockerfilePath: ./mysql.Dockerfile
-    disk:
-      name: data
-      mountPath: /var/lib/mysql
-      sizeGB: 1
+    plan: standard
+    repo: https://github.com/umesh1522/Restaurant-Website-Using-SpringBoot.git
+    buildCommand: echo "Building MySQL service"
+    startCommand: |
+      docker run --name mysql-db \
+        -e MYSQL_ROOT_PASSWORD="${MYSQL_ROOT_PASSWORD}" \
+        -e MYSQL_DATABASE=hotel \
+        -v ${RENDER_MOUNT_PATH}:/var/lib/mysql \
+        -p 3306:3306 \
+        mysql:8
     envVars:
-      - key: MYSQL_DATABASE
-        value: hotel
-      - key: MYSQL_USER
-        generateValue: true
-      - key: MYSQL_PASSWORD
-        generateValue: true
       - key: MYSQL_ROOT_PASSWORD
         generateValue: true
