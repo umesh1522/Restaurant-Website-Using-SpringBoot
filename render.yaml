@@ -1,10 +1,43 @@
 services:
+  # Spring Boot API Service
   - type: web
-    name: hotel-app
+    name: MajorProject
     env: docker
-    plan: free
+    repo: https://github.com/umesh1522/Authentication-Login-Springboot.git
     dockerfilePath: ./Dockerfile
+    healthCheckPath: /
+    # Automatically builds and deploys on push to main branch
+    autoDeploy: true
+    # Environment variables
     envVars:
+      - key: SPRING_APPLICATION_NAME
+        value: MajorProject
+      - key: SERVER_PORT
+        value: 8080
+      - key: JAVA_OPTS
+        value: "-Xmx512m -Xms256m"
+      # Upload settings
+      - key: SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE
+        value: 10MB
+      - key: SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE
+        value: 10MB
+      # JPA/Hibernate settings
+      - key: SPRING_JPA_HIBERNATE_DDL_AUTO
+        value: update
+      - key: SPRING_JPA_SHOW_SQL
+        value: "true"
+      - key: SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT
+        value: org.hibernate.dialect.MySQL8Dialect
+      # Static resources
+      - key: SPRING_WEB_RESOURCES_STATIC_LOCATIONS
+        value: "classpath:/static/,file:uploads/"
+      # Database connection - using Render MySQL service
+      - key: SPRING_DATASOURCE_URL
+        fromService:
+          name: mysql-db
+          type: pserv
+          property: connectionString
+          envVarName: JDBC_DATABASE_URL
       - key: SPRING_DATASOURCE_USERNAME
         fromService:
           name: mysql-db
@@ -17,14 +50,16 @@ services:
           property: password
       - key: SPRING_DATASOURCE_DRIVER_CLASS_NAME
         value: com.mysql.cj.jdbc.Driver
+      # Logging settings
       - key: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_JDBC_CORE_JDBCTEMPLATE
         value: DEBUG
 
+  # MySQL Database Service
   - type: pserv
     name: mysql-db
     env: docker
     plan: free
-    dockerfilePath: "" # leave blank since using built-in MySQL
+    image: mysql:8
     disk:
       name: data
       mountPath: /var/lib/mysql
