@@ -7,12 +7,12 @@ WORKDIR /app
 COPY target/*.jar app.jar
 
 # Create upload directory
-RUN mkdir -p /app/uploads && chmod -R 777 /app/uploads
+RUN mkdir -p /app/uploads && chmod 777 /app/uploads
 
-# Set timezone
+# Set the timezone
 ENV TZ=Asia/Kolkata
 
-# Set Spring environment variables (use Render secrets for sensitive ones)
+# Set environment variables
 ENV SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/hotel
 ENV SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
 
@@ -20,4 +20,4 @@ ENV SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
 EXPOSE 8080
 
 # Command to run the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
